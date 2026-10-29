@@ -24,6 +24,7 @@ Deno.serve(async (req) => {
   });
   const { data: role } = await sb.rpc("my_role");
   if (!role) return json(403, { error: "not_member" });
+  if (!Deno.env.get("ANTHROPIC_API_KEY")) return json(503, { error: "no_api_key" });
 
   let body: any;
   try { body = await req.json(); } catch { return json(400, { error: "json" }); }
