@@ -9,8 +9,16 @@
 
   var BUCKET = "assets";
   var MAX_FILE = 20 * 1024 * 1024;
+  /* 链接密钥：用 ?k=密钥 打开一次，存进本浏览器并从地址栏抹掉；之后每个请求带 x-access-key 头 */
+  var KEY_STORE = "png_access_key", accessKey = null;
+  try {
+    var u0 = new URL(location.href), k0 = u0.searchParams.get("k");
+    if (k0) { localStorage.setItem(KEY_STORE, k0); u0.searchParams.delete("k"); history.replaceState(null, "", u0.pathname + u0.search + u0.hash); }
+    accessKey = localStorage.getItem(KEY_STORE);
+  } catch (e) {}
   var sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey, {
-    auth: { flowType: "pkce", detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+    auth: { flowType: "pkce", detectSessionInUrl: true, persistSession: true, autoRefreshToken: true },
+    global: { headers: accessKey ? { "x-access-key": accessKey } : {} }
   });
 
   function err(code, msg) { var e = new Error(msg || code); e.code = code; return e; }
@@ -23,10 +31,9 @@
   function clean(o) { return JSON.parse(JSON.stringify(o)); }
 
   var sessionP = sb.auth.getSession().then(function (r) { return (r.data && r.data.session) || null; });
-  var roleP = sessionP.then(function (s) {
-    if (!s) return null;
-    return sb.from("members").select("role").eq("user_id", s.user.id).maybeSingle()
-      .then(function (r) { return r.data ? r.data.role : null; });
+  // 角色由数据库判断：登录成员，或带有效链接密钥的访问
+  var roleP = sessionP.then(function () {
+    return sb.rpc("my_role").then(function (r) { return r.error ? null : (r.data || null); });
   });
 
   /* ---------- db ---------- */
@@ -48,7 +55,7 @@
             });
           },
           onSnapshot: function (ok, bad) {
-            var alive = true, timer = null;
+            var alive = true, timer = null, poll = null;
             function load() {
               fetchCol(c).then(function (rows) {
                 if (!alive) return;
@@ -58,11 +65,13 @@
             function sched() { clearTimeout(timer); timer = setTimeout(load, 120); }
             (listeners[c] = listeners[c] || []).push(sched);
             load();
+            // 链接密钥模式下实时推送收不到（websocket 不带自定义头），改为定时刷新
+            poll = setInterval(function () { if (!document.hidden) load(); }, 10000);
             var ch = sb.channel("docs-" + c + "-" + Math.random().toString(36).slice(2))
               .on("postgres_changes", { event: "*", schema: "public", table: "docs", filter: "collection=eq." + c }, sched)
               .subscribe();
             return function () {
-              alive = false; clearTimeout(timer);
+              alive = false; clearTimeout(timer); clearInterval(poll);
               listeners[c] = (listeners[c] || []).filter(function (f) { return f !== sched; });
               sb.removeChannel(ch);
             };
@@ -148,13 +157,15 @@
 
   async function callClaude(messages, images, opts) {
     var sess = (await sb.auth.getSession()).data.session;
-    if (!sess) throw err("not_granted");
+    if (!sess && !accessKey) throw err("not_granted");
+    var hdr = { "Content-Type": "application/json", apikey: cfg.supabaseKey };
+    if (accessKey) hdr["x-access-key"] = accessKey; else hdr.Authorization = "Bearer " + sess.access_token;
     var stream = !!opts.stream;
     var resp;
     try {
       resp = await fetch(cfg.supabaseUrl + "/functions/v1/claude", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: "Bearer " + sess.access_token, apikey: cfg.supabaseKey },
+        headers: hdr,
         body: JSON.stringify({ messages: messages, images: images, stream: stream }),
         signal: opts.signal
       });
@@ -231,7 +242,7 @@
     use: async function (name) {
       var sess = await sessionP, role = await roleP;
       if (name === "user") return { can: function () { return Promise.resolve(role === "editor"); } };
-      if (!sess || !role) return null;
+      if (!role) return null;
       if (name === "db") return makeDb();
       if (name === "assets") return role === "editor" ? makeAssets() : null;
       if (name === "sample") return makeSample();
@@ -271,7 +282,9 @@
       else msg.textContent = "已发送，请查收邮件并点击链接。";
     };
 
-    sessionP.then(function (s) {
+    Promise.all([sessionP, roleP]).then(function (v) {
+      var s = v[0], role = v[1];
+      if (!s && role && accessKey) { btn.hidden = true; return; }
       if (s) {
         btn.textContent = "退出 · " + s.user.email;
         btn.onclick = async function () { await sb.auth.signOut(); location.reload(); };

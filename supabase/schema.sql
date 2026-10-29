@@ -65,3 +65,41 @@ drop policy if exists assets_insert on storage.objects;
 create policy assets_insert on storage.objects for insert with check (bucket_id = 'assets' and public.is_editor());
 drop policy if exists assets_delete on storage.objects;
 create policy assets_delete on storage.objects for delete using (bucket_id = 'assets' and public.is_editor());
+
+-- ===== 链接密钥访问（不用登录）=====
+-- 用 ?k=密钥 打开网站的人，浏览器会在每个请求里带 x-access-key 头；数据库只存密钥的 SHA-256 哈希。
+-- 添加密钥（把 '你的密钥' 换成一串足够长的随机字符，例如 openssl rand -hex 16 的输出）：
+--   insert into public.access_keys (key_hash, role, note)
+--   values (encode(extensions.digest('你的密钥', 'sha256'), 'hex'), 'editor', '主链接');
+-- 撤销密钥：delete from public.access_keys where note = '主链接';
+create extension if not exists pgcrypto with schema extensions;
+
+create table if not exists public.access_keys (
+  key_hash text primary key,
+  role text not null check (role in ('editor','viewer')),
+  note text
+);
+alter table public.access_keys enable row level security;  -- 不建任何策略：网页端无法直接读写
+
+create or replace function public.key_role() returns text
+  language sql stable security definer set search_path = public, extensions as
+  $$ select role from public.access_keys
+     where key_hash = encode(digest(coalesce(nullif(current_setting('request.headers', true), '')::json ->> 'x-access-key', ''), 'sha256'), 'hex')
+     limit 1 $$;
+
+create or replace function public.my_role() returns text
+  language sql stable security definer set search_path = public as
+  $$ select case
+       when exists (select 1 from public.members where user_id = auth.uid() and role = 'editor') or public.key_role() = 'editor' then 'editor'
+       when exists (select 1 from public.members where user_id = auth.uid()) or public.key_role() = 'viewer' then 'viewer'
+     end $$;
+
+create or replace function public.is_member() returns boolean
+  language sql stable security definer set search_path = public as
+  $$ select public.my_role() is not null $$;
+create or replace function public.is_editor() returns boolean
+  language sql stable security definer set search_path = public as
+  $$ select public.my_role() = 'editor' $$;
+
+revoke all on function public.key_role() from public, anon, authenticated;
+grant execute on function public.my_role() to anon, authenticated;

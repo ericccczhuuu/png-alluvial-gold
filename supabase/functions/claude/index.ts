@@ -1,11 +1,11 @@
 // Supabase Edge Function：替网站调用 Claude。
-// 只有 members 表里的登录用户能调用；Anthropic 密钥只存在函数的环境变量里，不会出现在网页中。
+// 只有带有效链接密钥或已登录的成员能调用；Anthropic 密钥只存在函数的环境变量里，不会出现在网页中。
 // 部署前设置密钥：ANTHROPIC_API_KEY（必填）、CLAUDE_MODEL（可选，默认 claude-sonnet-5-5）。
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-access-key",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 const json = (status: number, body: unknown) =>
@@ -15,14 +15,15 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: cors });
   if (req.method !== "POST") return json(405, { error: "method" });
 
+  // 两种身份：链接密钥（x-access-key），或登录用户（Authorization）。角色由数据库的 my_role() 判断。
+  const key = req.headers.get("x-access-key") ?? "";
   const auth = req.headers.get("Authorization") ?? "";
+  const fwd: Record<string, string> = key ? { "x-access-key": key } : auth ? { Authorization: auth } : {};
   const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
-    global: { headers: { Authorization: auth } },
+    global: { headers: fwd },
   });
-  const { data: u } = await sb.auth.getUser();
-  if (!u?.user) return json(401, { error: "login" });
-  const { data: m } = await sb.from("members").select("role").eq("user_id", u.user.id).maybeSingle();
-  if (!m) return json(403, { error: "not_member" });
+  const { data: role } = await sb.rpc("my_role");
+  if (!role) return json(403, { error: "not_member" });
 
   let body: any;
   try { body = await req.json(); } catch { return json(400, { error: "json" }); }
