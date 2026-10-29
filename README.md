@@ -9,13 +9,14 @@
 | `index.html` | 项目台网页源码（2026-10-29 版本，含复核修正与可信度标注） |
 | `calc-test.js` / `calc-expected.json` | 计算公式测试：27 个独立手算样例，全部通过 |
 | `data-backup-2026-10-29.json` | 项目台录入数据的备份 |
+| `config.js` / `supabase-shim.js` / `supabase/` / `SETUP.md` | 网站版后端接入（登录、数据库、文件、Claude 代理） |
 
 ## 在线版本
 
 - 项目台（可录入数据、上传照片、照片识别、问 Claude）：https://claude.ai/artifact/56gVtx2X8193Dp16gtjcyS
 - 研究底稿《巴布亚新几内亚砂金矿研究》：https://claude.ai/artifact/D5AiZRD7ZpZec9UF3bbTCD（可下载为 Word / PDF / Markdown）
 
-> `index.html` 直接用浏览器打开只能**离线浏览**：知识页面、换算器、盈利模型都能用，但录入数据、上传照片、照片识别、问 Claude 只在 claude.ai 的在线版本里可用。
+> `index.html` 直接用浏览器打开只能**离线浏览**：知识页面、换算器、盈利模型都能用，但录入数据、上传照片、照片识别、问 Claude 需要连接后端。在 claude.ai 的在线版本里自带；网站版（GitHub Pages）按 [SETUP.md](SETUP.md) 接入 Supabase 后也可用，且只有受邀成员能读写数据。
 >
 > 研究底稿写于项目台之前；之后的复核修正（环保许可分级、总理承诺日期、IPA 保留行业清单等）以项目台为准。
 
