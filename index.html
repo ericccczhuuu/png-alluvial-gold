@@ -1,0 +1,1343 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0;font:14px system-ui}[hidden]{display:none!important}img{max-width:100%}</style></head><body><title>PNG 砂金项目台</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: field-ledger — slim header with two-group tab rail (了解 / 项目), one working column of panels; numbers in mono like a sample book */
+:root{
+  --bg:#F3F4F0; --surface:#FFFFFF; --sunk:#E8EAE4; --line:#D3D7CE;
+  --ink:#1B2620; --muted:#5E6A62; --gold:#9A6B0E; --gold-soft:#F3E6C7;
+  --river:#2D6563; --river-soft:#DCEBE9;
+  --ok:#2F7A46; --ok-soft:#DDEFE2; --warn:#A86A00; --bad:#A63D32; --bad-soft:#F5DEDA;
+  --gravel:#C9B98F; --bedrock:#6F6A63; --soil:#8C7A5B; --water:#7FB3C8;
+  --f-display:"Noto Serif SC","Songti SC",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:8px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111613; --surface:#18201B; --sunk:#202A24; --line:#2E3A33;
+  --ink:#E4E9E3; --muted:#9AA79E; --gold:#E0AE45; --gold-soft:#3A2F17;
+  --river:#7FC2BD; --river-soft:#1C3533; --ok:#6CC08A; --ok-soft:#1B3324; --warn:#E3A84A; --bad:#E57F72; --bad-soft:#3D211D;
+  --gravel:#8E7F58; --bedrock:#56524C; --soil:#6B5C43; --water:#3F7287; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111613; --surface:#18201B; --sunk:#202A24; --line:#2E3A33;
+  --ink:#E4E9E3; --muted:#9AA79E; --gold:#E0AE45; --gold-soft:#3A2F17;
+  --river:#7FC2BD; --river-soft:#1C3533; --ok:#6CC08A; --ok-soft:#1B3324; --warn:#E3A84A; --bad:#E57F72; --bad-soft:#3D211D;
+  --gravel:#8E7F58; --bedrock:#56524C; --soil:#6B5C43; --water:#3F7287; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-block:12px 4px}
+.hd h1{font-family:var(--f-display);font-size:21px;margin:0;letter-spacing:.02em}
+.hd .sub{color:var(--muted);font-size:13px}
+nav{display:flex;gap:2px;overflow-x:auto;padding-block:2px 0;scrollbar-width:none;align-items:stretch}
+nav .grp{flex:0 0 auto;font-size:11px;letter-spacing:.12em;color:var(--gold);align-self:center;padding:0 6px 0 10px;font-weight:700}
+nav .grp:first-child{padding-left:0}
+nav a{flex:0 0 auto;padding:8px 10px;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;font-size:14px;white-space:nowrap}
+nav a.on{color:var(--ink);border-bottom-color:var(--gold);font-weight:500}
+nav .sep{flex:0 0 1px;background:var(--line);margin:8px 4px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--river);outline-offset:2px}
+main{padding-block:22px 64px}
+section.view{display:grid;gap:18px}
+h2{font-family:var(--f-display);font-size:20px;margin:0;text-wrap:balance}
+h3{font-size:15.5px;margin:0}
+p{margin:0}
+.lead{color:var(--muted);max-width:72ch}
+.prose{max-width:74ch;display:grid;gap:8px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0;display:grid;gap:10px;align-content:start}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px}
+.stat .k{font-size:12px;color:var(--muted);letter-spacing:.04em}
+.stat .v{font-family:var(--f-mono);font-size:22px;font-variant-numeric:tabular-nums;line-height:1.3}
+.stat .u{font-size:12px;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)} .small{font-size:13px} .xs{font-size:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.spacer{flex:1}
+button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:7px 12px;cursor:pointer}
+button.primary{background:var(--river);border-color:var(--river);color:var(--surface)}
+button.ghost{border-color:transparent;background:transparent;color:var(--muted);padding:4px 8px}
+button.danger{color:var(--bad)}
+button:disabled{opacity:.5;cursor:not-allowed}
+form.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}
+form.f .full{grid-column:1/-1}
+label.fld{display:grid;gap:4px;font-size:13px;color:var(--muted);align-content:start}
+input,select,textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;width:100%;min-width:0}
+textarea{min-height:76px;resize:vertical}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.03em;white-space:nowrap}
+td.n,th.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--gold-soft);color:var(--warn)} .pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.riv{background:var(--river-soft);color:var(--river)}
+.pill.s-visited{background:var(--river-soft);color:var(--river)} .pill.s-sampling{background:var(--gold-soft);color:var(--gold)}
+.pill.s-negotiating{background:var(--gold-soft);color:var(--warn)} .pill.s-selected{background:var(--river);color:var(--surface)}
+.pill.s-dropped{background:transparent;color:var(--bad);border:1px solid var(--line)}
+.pipe{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.pipe div{background:var(--sunk);border-radius:6px;padding:8px;text-align:center;min-width:0}
+.pipe .c{font-family:var(--f-mono);font-size:20px} .pipe .l{font-size:12px;color:var(--muted)}
+@media (max-width:560px){.pipe{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.steps{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps>li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.steps>li::before{counter-increment:s;content:counter(s);font-family:var(--f-mono);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:var(--sunk);color:var(--muted)}
+.steps>li.now::before{background:var(--gold);color:var(--surface)}
+.thumbs{display:flex;gap:6px;flex-wrap:wrap}
+.thumbs a{display:block;width:60px;height:60px;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:var(--sunk)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.thumbs .doc{display:grid;place-items:center;font-size:11px;color:var(--muted);height:100%}
+.entry{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:6px}
+.entry:first-child{border-top:0;padding-top:0}
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:16px;color:var(--muted);text-align:center;font-size:14px}
+.note{background:var(--gold-soft);border-radius:6px;padding:10px 12px;font-size:14px}
+.alert{background:var(--bad-soft);border-left:3px solid var(--bad);border-radius:6px;padding:10px 12px;font-size:14px}
+.tip{background:var(--river-soft);border-radius:6px;padding:10px 12px;font-size:14px}
+.score{display:inline-flex;gap:2px;vertical-align:middle}
+.score i{width:8px;height:8px;border-radius:2px;background:var(--sunk);display:inline-block}
+.score i.on{background:var(--gold)}
+.best td{background:var(--river-soft)}
+.status{font-size:13px;color:var(--muted)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:6px;font-size:14px;z-index:20}
+a{color:var(--river)}
+sup.c a{font-size:11px;text-decoration:none;font-family:var(--f-mono)}
+.ladder{display:grid;gap:8px}
+.rung{display:grid;grid-template-columns:110px 1fr;gap:12px;border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;background:var(--surface)}
+.rung .lvl{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.rung .bar{height:6px;border-radius:3px;background:var(--sunk);margin-top:6px;overflow:hidden}
+.rung .bar i{display:block;height:100%;background:var(--gold)}
+@media (max-width:560px){.rung{grid-template-columns:1fr}}
+.svgbox{overflow-x:auto}
+.svgbox svg{display:block;max-width:100%;height:auto}
+.hot{cursor:pointer}
+.hot circle{fill:var(--gold);stroke:var(--surface);stroke-width:2}
+.hot text{fill:var(--surface);font:600 12px var(--f-mono)}
+.hot.on circle{fill:var(--river)}
+.roadmap{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.roadmap li{display:grid;grid-template-columns:34px 1fr;gap:12px;position:relative;padding-bottom:16px}
+.roadmap li::before{content:attr(data-n);font-family:var(--f-mono);font-size:12px;width:28px;height:28px;border-radius:50%;background:var(--river);color:var(--surface);display:grid;place-items:center;z-index:1}
+.roadmap li::after{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--line)}
+.roadmap li:last-child::after{display:none}
+.roadmap .card{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;background:var(--surface);display:grid;gap:4px;min-width:0}
+.kv{display:grid;grid-template-columns:76px 1fr;gap:2px 10px;font-size:13.5px}
+.kv dt{color:var(--muted)} .kv dd{margin:0}
+.heat td{text-align:center;font-family:var(--f-mono);font-size:12px;padding:6px 4px;border:1px solid var(--surface)}
+.heat th{text-align:center}
+.chat{display:grid;gap:10px;max-height:520px;overflow:auto;padding:4px}
+.msg{padding:10px 12px;border-radius:8px;white-space:pre-wrap;font-size:14px;max-width:85%}
+.msg.u{background:var(--river-soft);justify-self:end}
+.msg.a{background:var(--sunk);justify-self:start}
+details>summary{cursor:pointer;color:var(--river);font-size:14px}
+ul.tight{margin:0;padding-left:18px;display:grid;gap:4px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="hd"><h1>PNG 砂金项目台</h1><span class="sub">巴布亚新几内亚 · Morobe · 从选址到投产</span><span class="spacer"></span><span class="status" id="conn">正在连接数据…</span></div>
+    <nav id="nav">
+      <span class="grp">项目</span>
+      <a href="#overview" data-v="overview">总览</a>
+      <a href="#sites" data-v="sites">候选矿点</a>
+      <a href="#samples" data-v="samples">取样与品位</a>
+      <a href="#journal" data-v="journal">现场日志</a>
+      <a href="#tasks" data-v="tasks">任务</a>
+      <a href="#contacts" data-v="contacts">联系人</a>
+      <a href="#budget" data-v="budget">预算支出</a>
+      <a href="#files" data-v="files">文档库</a>
+      <a href="#ask" data-v="ask">问 Claude</a>
+      <span class="sep"></span><span class="grp">了解</span>
+      <a href="#basics" data-v="basics">砂金 101</a>
+      <a href="#grade" data-v="grade">怎么看品位</a>
+      <a href="#process" data-v="process">开采流程</a>
+      <a href="#equipment" data-v="equipment">设备配置</a>
+      <a href="#economics" data-v="economics">盈利分析</a>
+      <a href="#permits" data-v="permits">办证路线</a>
+      <a href="#map" data-v="map">地图</a>
+      <a href="#policy" data-v="policy">政策追踪</a>
+      <a href="#glossary" data-v="glossary">词汇表</a>
+      <a href="#sources" data-v="sources">来源</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= PROJECT ================= -->
+<section class="view" id="v-overview">
+  <div class="alert"><b>当前最大风险：外籍人员参与砂金开采。</b> 2025 年 10 月 29 日，105 名外籍人员因在 Bulolo 区 Mumeng 的 Sambio 村非法采金被押离 Morobe、等待遣返，多数签证或证件无效<sup class="c"><a href="#sources">23</a></sup>。总理 2026 年 10 月 15 日在议会承诺（总理府 16 日发布）在 2027 年大选前把"砂金只限本国公民"立法<sup class="c"><a href="#sources">21</a></sup>。所有人员签证、合作结构都要先合规。详见<a href="#permits">办证路线</a>。</div>
+  <div class="stats" id="ov-stats"></div>
+  <div class="panel">
+    <div class="row"><h2>矿点进度</h2><span class="spacer"></span><a href="#sites" class="small">全部矿点</a></div>
+    <div class="pipe" id="ov-pipe"></div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <h2>项目阶段</h2>
+      <p class="small muted">高亮为当前阶段（按录入的数据自动判断）。品位未经系统取样证实前，不建议投入重型设备。</p>
+      <ol class="steps" id="ov-steps"></ol>
+    </div>
+    <div class="panel">
+      <div class="row"><h2>未完成任务</h2><span class="spacer"></span><a href="#tasks" class="small">全部任务</a></div>
+      <div id="ov-tasks"></div>
+      <div class="row" style="margin-top:6px"><h2>最近日志</h2><span class="spacer"></span><a href="#journal" class="small">全部日志</a></div>
+      <div id="ov-journal" style="display:grid;gap:10px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-sites" hidden>
+  <div class="row"><h2>候选矿点</h2><span class="spacer"></span><button class="primary" id="site-new" data-w>新增矿点</button></div>
+  <p class="lead">每个考察过的地点建一条。重点看三件事：土地归谁、租约状态、取样品位。下面的对比表可以调整各项权重给出排名。</p>
+  <div class="panel" id="site-form-wrap" hidden>
+    <form class="f" id="site-form">
+      <label class="fld">矿点名称<input id="s-name" required placeholder="例：Bulolo 河上游 A 点"></label>
+      <label class="fld">省份<select id="s-province"></select></label>
+      <label class="fld">地区 / 河流<input id="s-area" placeholder="例：Wau–Bulolo，Watut 河"></label>
+      <label class="fld">GPS（纬度, 经度）<input id="s-gps" placeholder="例：-7.20, 146.65"></label>
+      <label class="fld">状态<select id="s-status"></select></label>
+      <label class="fld">首次考察日期<input id="s-date" type="date"></label>
+      <label class="fld">土地主 / 氏族<input id="s-landowner" placeholder="氏族名、是否有 ILG"></label>
+      <label class="fld">租约状态<select id="s-tenure"></select></label>
+      <label class="fld">他人勘探许可证（EL）覆盖<select id="s-el"><option value="">不清楚</option><option>无</option><option>有</option></select></label>
+      <label class="fld">交通<input id="s-access" placeholder="例：距 Bulolo 镇 2 小时土路"></label>
+      <label class="fld">水源<input id="s-water" placeholder="例：常年河流，旱季水量？"></label>
+      <label class="fld">现有采金活动<input id="s-activity" placeholder="例：当地人淘金 / 已有机械"></label>
+      <div class="fld full">评分（1 差 – 5 好）<div class="row" id="s-scores"></div></div>
+      <label class="fld full">备注<textarea id="s-notes" placeholder="地形、基岩深度、治安、当地人态度…"></textarea></label>
+      <label class="fld full" data-up>照片 / 手写记录（可多选）<input id="s-photos" type="file" accept="image/*,application/pdf" multiple></label>
+      <div class="row full"><button class="primary" type="submit">保存矿点</button><button type="button" id="site-cancel">取消</button><span class="status" id="site-msg"></span></div>
+    </form>
+  </div>
+  <div class="panel">
+    <div class="row"><h3>矿点对比</h3><span class="spacer"></span><span class="xs muted">权重 0–5，0 表示不计入</span></div>
+    <div class="row" id="cmp-weights"></div>
+    <div class="tbl"><table id="cmp-table"></table></div>
+  </div>
+  <div id="site-list" style="display:grid;gap:12px"></div>
+</section>
+
+<section class="view" id="v-samples" hidden>
+  <div class="row"><h2>取样与品位</h2><span class="spacer"></span><button id="ocr-open" data-w data-ai hidden>从手写记录照片识别</button><button class="primary" id="smp-new" data-w>新增取样</button></div>
+  <p class="lead">每一个坑、每一组淘盘、每一槽都记一行。系统按<b>原位立方米</b>算品位，填了成色还会算出纯金品位。方法见<a href="#grade">怎么看品位</a>。</p>
+  <div class="note">淘盘只能说明"有没有金、金粒多粗"，不能用来估算储量<sup class="c"><a href="#sources">3</a></sup>。可信的品位来自挖到基岩的系统探坑和试采大样。</div>
+  <div class="panel" id="ocr-wrap" hidden>
+    <h3>从手写记录照片识别</h3>
+    <p class="small muted">上传 1–4 张手写取样记录的照片，Claude 会把能看清的行识别出来。识别结果<b>必须人工核对</b>后才会保存。</p>
+    <div class="row"><input type="file" id="ocr-file" accept="image/jpeg,image/png,image/webp" multiple style="max-width:320px"><select id="ocr-site" style="max-width:240px"></select><button class="primary" id="ocr-run">识别</button><button id="ocr-close">关闭</button><span class="status" id="ocr-msg"></span></div>
+    <div class="tbl" id="ocr-out"></div>
+  </div>
+  <div class="panel" id="smp-form-wrap" hidden>
+    <form class="f" id="smp-form">
+      <label class="fld">矿点<select id="m-site" required></select></label>
+      <label class="fld">日期<input id="m-date" type="date"></label>
+      <label class="fld">样品编号<input id="m-label" placeholder="例：A-L1-P03"></label>
+      <label class="fld">方法<select id="m-method"><option>淘盘 Pan</option><option>探坑 Test pit</option><option>槽样 Channel</option><option>溪槽 Sluice</option><option>钻孔 Drill</option><option>试采大样 Bulk sample</option></select></label>
+      <label class="fld">深度 从（米）<input id="m-from" type="number" step="0.1" min="0"></label>
+      <label class="fld">深度 到（米）<input id="m-to" type="number" step="0.1" min="0"></label>
+      <label class="fld">是否到基岩<select id="m-bedrock"><option value="">不清楚</option><option>是</option><option>否</option></select></label>
+      <label class="fld">体积计算方式<select id="m-vmode"><option value="pit">坑尺寸（原位方）</option><option value="pans">淘盘数 × 盘系数</option><option value="loose">松方（桶 / 升）÷ 松散系数</option><option value="bank">直接填原位 m³</option></select></label>
+      <label class="fld" data-vm="pit">长 m<input id="m-l" type="number" step="0.01" min="0"></label>
+      <label class="fld" data-vm="pit">宽 m<input id="m-w" type="number" step="0.01" min="0"></label>
+      <label class="fld" data-vm="pit">深 m<input id="m-d" type="number" step="0.01" min="0"></label>
+      <label class="fld" data-vm="pans" hidden>淘盘数<input id="m-pans" type="number" step="1" min="0"></label>
+      <label class="fld" data-vm="pans" hidden>盘系数（盘 / 原位 m³）<input id="m-pf" type="number" step="1" min="1" value="235"></label>
+      <label class="fld" data-vm="loose" hidden>松方量<input id="m-loose" type="number" step="any" min="0"></label>
+      <label class="fld" data-vm="loose" hidden>单位<select id="m-lunit"><option value="L">升 L</option><option value="bucket">桶（20 L）</option><option value="m3">m³</option></select></label>
+      <label class="fld" data-vm="loose" hidden>松散系数（膨胀 %）<input id="m-swell" type="number" step="1" min="0" value="25"></label>
+      <label class="fld" data-vm="bank" hidden>原位体积 m³<input id="m-bankv" type="number" step="any" min="0"></label>
+      <label class="fld">回收毛金重（mg）<input id="m-gold" type="number" step="any" min="0" required></label>
+      <label class="fld">成色 %（化验得到，可空）<input id="m-fine" type="number" step="0.1" min="0" max="100" placeholder="例：85"></label>
+      <label class="fld">金花数（可空）<input id="m-colours" type="number" step="1" min="0"></label>
+      <label class="fld">最大金粒描述<input id="m-largest" placeholder="例：约 2 mm，片状"></label>
+      <label class="fld">剔除大石比例 %<input id="m-oversize" type="number" step="1" min="0" max="90" placeholder="0"></label>
+      <label class="fld">取样人 / 见证人<input id="m-who"></label>
+      <label class="fld full">备注<textarea id="m-notes" placeholder="分层描述、颜色、黑砂、尾砂复淘是否有金…"></textarea></label>
+      <label class="fld full" data-up>照片 / 手写记录<input id="m-photos" type="file" accept="image/*,application/pdf" multiple></label>
+      <div class="full tip small" id="m-preview">填写体积和金重后，这里显示原位体积和品位。</div>
+      <div class="row full"><button class="primary" type="submit">保存取样</button><button type="button" id="smp-cancel">取消</button><span class="status" id="smp-msg"></span></div>
+    </form>
+  </div>
+  <div class="panel"><h3>各矿点汇总（按体积加权）</h3><div class="tbl"><table id="smp-sum"></table></div><p class="xs muted">加权品位 = 总金重 ÷ 总原位体积，不是各样品品位的简单平均<sup class="c"><a href="#sources">1</a></sup>。只有淘盘样品的矿点，品位仅作参考。</p></div>
+  <div class="panel"><h3>全部样品</h3><div class="tbl"><table id="smp-table"></table></div></div>
+</section>
+
+<section class="view" id="v-journal" hidden>
+  <div class="row"><h2>现场日志</h2><span class="spacer"></span><button class="primary" id="jr-new" data-w>写日志</button></div>
+  <p class="lead">考察、会面、谈判、发现，按时间记。手写记录和现场照片直接拍照附上。</p>
+  <div class="panel" id="jr-form-wrap" hidden>
+    <form class="f" id="jr-form">
+      <label class="fld">日期<input id="j-date" type="date"></label>
+      <label class="fld">关联矿点<select id="j-site"></select></label>
+      <label class="fld full">标题<input id="j-title" required placeholder="例：与 X 氏族土地主首次会面"></label>
+      <label class="fld full">内容<textarea id="j-body" placeholder="谁、在哪、看到了什么、谈了什么、下一步"></textarea></label>
+      <label class="fld full" data-up>照片 / 手写记录<input id="j-photos" type="file" accept="image/*,application/pdf" multiple></label>
+      <div class="row full"><button class="primary" type="submit">保存日志</button><button type="button" id="jr-cancel">取消</button><span class="status" id="jr-msg"></span></div>
+    </form>
+  </div>
+  <div class="panel"><div id="jr-list" style="display:grid;gap:12px"></div></div>
+</section>
+
+<section class="view" id="v-tasks" hidden>
+  <div class="row"><h2>任务</h2><span class="spacer"></span><button class="primary" id="tk-new" data-w>新增任务</button></div>
+  <div class="panel" id="tk-form-wrap" hidden>
+    <form class="f" id="tk-form">
+      <label class="fld full">任务<input id="t-title" required placeholder="例：确认 A 点土地主是否已成立 ILG"></label>
+      <label class="fld">负责人<input id="t-owner"></label>
+      <label class="fld">截止日期<input id="t-due" type="date"></label>
+      <label class="fld">状态<select id="t-status"><option>待办</option><option>进行中</option><option>受阻</option><option>完成</option></select></label>
+      <label class="fld">阶段<select id="t-stage"></select></label>
+      <label class="fld">关联矿点<select id="t-site"></select></label>
+      <label class="fld full">备注<input id="t-notes"></label>
+      <div class="row full"><button class="primary" type="submit">保存任务</button><button type="button" id="tk-cancel">取消</button><span class="status" id="tk-msg"></span></div>
+    </form>
+  </div>
+  <div class="panel"><div class="tbl"><table id="tk-table"></table></div></div>
+</section>
+
+<section class="view" id="v-contacts" hidden>
+  <div class="row"><h2>联系人</h2><span class="spacer"></span><button class="primary" id="ct-new" data-w>新增联系人</button></div>
+  <p class="lead">土地主、中间人、律师、买金商、MRA 官员、设备商。每次接触在备注里记一句。</p>
+  <div class="panel" id="ct-form-wrap" hidden>
+    <form class="f" id="ct-form">
+      <label class="fld">姓名<input id="c-name" required></label>
+      <label class="fld">角色<select id="c-role"><option>土地主</option><option>中间人</option><option>律师</option><option>买金商 / 出口商</option><option>MRA / 政府</option><option>设备 / 物流</option><option>技术人员</option><option>其他</option></select></label>
+      <label class="fld">机构 / 氏族<input id="c-org"></label>
+      <label class="fld">电话 / 微信 / WhatsApp<input id="c-phone"></label>
+      <label class="fld">关联矿点<select id="c-site"></select></label>
+      <label class="fld full">备注<textarea id="c-notes"></textarea></label>
+      <div class="row full"><button class="primary" type="submit">保存</button><button type="button" id="ct-cancel">取消</button><span class="status" id="ct-msg"></span></div>
+    </form>
+  </div>
+  <div class="panel"><div class="tbl"><table id="ct-table"></table></div></div>
+</section>
+
+<section class="view" id="v-budget" hidden>
+  <div class="row"><h2>预算与支出</h2><span class="spacer"></span><button class="primary" id="bg-new" data-w>记一笔</button></div>
+  <div class="panel" id="bg-form-wrap" hidden>
+    <form class="f" id="bg-form">
+      <label class="fld">日期<input id="b-date" type="date"></label>
+      <label class="fld">类型<select id="b-type"><option>实际支出</option><option>计划预算</option></select></label>
+      <label class="fld">类别<select id="b-cat"><option>差旅住宿</option><option>取样化验</option><option>土地主 / 社区</option><option>办证与法律</option><option>设备</option><option>运输物流</option><option>人工</option><option>燃料</option><option>其他</option></select></label>
+      <label class="fld">金额<input id="b-amt" type="number" step="any" min="0" required></label>
+      <label class="fld">币种<select id="b-cur"><option>PGK</option><option>USD</option><option>HKD</option><option>CNY</option><option>AUD</option></select></label>
+      <label class="fld">关联矿点<select id="b-site"></select></label>
+      <label class="fld full">说明<input id="b-note"></label>
+      <div class="row full"><button class="primary" type="submit">保存</button><button type="button" id="bg-cancel">取消</button><span class="status" id="bg-msg"></span></div>
+    </form>
+  </div>
+  <div class="panel"><h3>按类别汇总（按币种分列，不做换算）</h3><div class="tbl"><table id="bg-sum"></table></div></div>
+  <div class="panel"><h3>明细</h3><div class="tbl"><table id="bg-table"></table></div></div>
+</section>
+
+<section class="view" id="v-files" hidden>
+  <h2>文档库</h2>
+  <p class="lead">项目书、合同、许可证、化验报告、地图。PDF 和图片可以直接上传。</p>
+  <div class="panel" data-up>
+    <form class="f" id="fl-form">
+      <label class="fld">类别<select id="f-cat"><option>项目书 / 方案</option><option>合同 / 协议</option><option>许可 / 租约</option><option>化验报告</option><option>地图 / 测量</option><option>其他</option></select></label>
+      <label class="fld">关联矿点<select id="f-site"></select></label>
+      <label class="fld full">文件<input id="f-file" type="file" accept="image/*,application/pdf,text/plain,text/csv,text/markdown" multiple required></label>
+      <div class="row full"><button class="primary" type="submit">上传</button><span class="status" id="fl-msg"></span></div>
+    </form>
+  </div>
+  <div class="panel"><div class="tbl"><table id="fl-table"></table></div></div>
+</section>
+
+<section class="view" id="v-ask" hidden>
+  <h2>问 Claude</h2>
+  <p class="lead">Claude 会结合本站的知识要点和你们录入的矿点、样品、任务来回答。它看不到网上的新信息，涉及法律和金额的结论请再核实。</p>
+  <div class="panel" id="ask-panel">
+    <div class="row xs" id="ask-sugg"></div>
+    <div class="chat" id="ask-log"><div class="empty">例如："A 点现在的样品够不够判断品位？还缺什么？"</div></div>
+    <form class="row" id="ask-form"><input id="ask-in" placeholder="输入问题" style="flex:1;min-width:200px"><button class="primary" type="submit" id="ask-send">发送</button><button type="button" id="ask-stop" hidden>停止</button><button type="button" id="ask-clear">清空</button></form>
+    <span class="status" id="ask-msg"></span>
+  </div>
+</section>
+
+<!-- ================= KNOWLEDGE ================= -->
+<section class="view" id="v-basics" hidden>
+  <h2>砂金 101：金为什么会在那里</h2>
+  <div class="row small" style="gap:8px"><span class="pill ok">可信度：较高</span><span class="muted">地质原理是通用知识；PNG 历史数据来自 ANU 出版的史料。剖面图为示意。</span></div>
+  <div class="prose"><p>砂金是大自然已经完成了"破碎 + 重力分选"的金。金矿脉风化崩解后，金粒被水搬运；金的比重约 19.3，普通砂石约 2.65（物理常数），水流一减速金就先沉下来<sup class="c"><a href="#sources">57</a></sup>。所以砂金不需要炸石、磨矿、氰化，只要"挖、洗、重力回收"，这就是它门槛低、出钱快的原因。</p>
+  <p>在达到经济品位的砂砾里，金可能只占一亿分之一，而且分布极不均匀<sup class="c"><a href="#sources">1</a></sup><sup class="c"><a href="#sources">3</a></sup>。<b>挖不到基岩、挖偏了古河道，就是在洗废土。</b></p></div>
+  <div class="panel">
+    <div class="row"><h3>河谷剖面：点数字看金在哪里</h3></div>
+    <div class="svgbox"><svg id="xsec" viewBox="0 0 760 300" role="img" aria-label="河谷剖面示意图">
+      <rect x="0" y="0" width="760" height="300" fill="var(--surface)"/>
+      <path d="M0 70 L150 70 L190 120 L300 150 L330 205 L430 205 L460 150 L560 135 L600 100 L760 90 L760 300 L0 300 Z" fill="var(--bedrock)"/>
+      <path d="M150 70 L190 120 L300 150 L330 205 L430 205 L460 150 L560 135 L600 100 L600 92 L560 112 L470 120 L455 140 L430 175 L330 175 L300 125 L200 100 L160 62 Z" fill="var(--gravel)"/>
+      <path d="M0 70 L150 70 L160 62 L200 100 L300 125 L330 175 L430 175 L455 140 L470 120 L560 112 L600 92 L760 90 L760 74 L600 76 L560 92 L470 98 L440 120 L420 150 L340 150 L310 108 L200 82 L165 50 L0 56 Z" fill="var(--soil)" opacity=".85"/>
+      <path d="M600 92 L760 90 L600 100 Z" fill="var(--soil)" opacity=".85"/>
+      <path d="M345 150 L415 150 L410 160 L350 160 Z" fill="var(--water)"/>
+      <path d="M200 100 L300 125 L300 150 L190 120 Z" fill="var(--gravel)" stroke="var(--gold)" stroke-dasharray="3 3"/>
+      <path d="M330 203 L430 203 L428 197 L332 197 Z" fill="var(--gold)"/>
+      <path d="M360 205 L364 222 L368 205 M395 205 L398 218 L402 205" stroke="var(--gold)" stroke-width="2" fill="none"/>
+      <path d="M520 128 Q540 160 575 130" fill="none" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="20" y="45" fill="var(--muted)" font-size="12">表土 / 覆盖层</text>
+      <text x="20" y="130" fill="var(--surface)" font-size="12">基岩</text>
+      <text x="610" y="140" fill="var(--surface)" font-size="12">基岩</text>
+      <text x="355" y="145" fill="var(--muted)" font-size="11">现代河流</text>
+      <g class="hot" data-h="1" tabindex="0"><circle cx="380" cy="190" r="12"/><text x="376" y="194">1</text></g>
+      <g class="hot" data-h="2" tabindex="0"><circle cx="382" cy="232" r="12"/><text x="378" y="236">2</text></g>
+      <g class="hot" data-h="3" tabindex="0"><circle cx="245" cy="105" r="12"/><text x="241" y="109">3</text></g>
+      <g class="hot" data-h="4" tabindex="0"><circle cx="548" cy="160" r="12"/><text x="544" y="164">4</text></g>
+      <g class="hot" data-h="5" tabindex="0"><circle cx="90" cy="62" r="12"/><text x="86" y="66">5</text></g>
+      <g class="hot" data-h="6" tabindex="0"><circle cx="440" cy="126" r="12"/><text x="436" y="130">6</text></g>
+    </svg></div>
+    <div class="tip" id="xsec-info">点图上的数字。</div>
+    <div class="legend"><span><i style="background:var(--soil)"></i>表土</span><span><i style="background:var(--gravel)"></i>含金砂砾</span><span><i style="background:var(--gold)"></i>富集带</span><span><i style="background:var(--bedrock)"></i>基岩</span><span>示意图，不按比例</span></div>
+  </div>
+  <div class="panel">
+    <h3>砂金矿的类型（离矿源由近到远）<sup class="c"><a href="#sources">57</a></sup></h3>
+    <div class="tbl"><table>
+      <tr><th>类型</th><th>怎么形成</th><th>特点</th></tr>
+      <tr><td>残积 Residual</td><td>矿脉原地风化，轻物质流失</td><td>紧贴矿源，规模小</td></tr>
+      <tr><td>坡积 Eluvial</td><td>风化物顺坡蠕动、雨水淘洗</td><td>金粒棱角明显，说明矿源近</td></tr>
+      <tr><td>河床冲积 Stream</td><td>流水分选，沿河床富集</td><td>最常见的开采对象</td></tr>
+      <tr><td>阶地 Bench / Terrace</td><td>河流下切后留在高处的古河床</td><td>高于现代河面，容易被忽略</td></tr>
+      <tr><td>埋藏古河道</td><td>古河道被新沉积覆盖</td><td>剥离量大，成本高</td></tr>
+      <tr><td>海滩 Beach</td><td>潮汐与风暴分选，黑砂含细金</td><td>金粒细</td></tr>
+    </table></div>
+  </div>
+  <div class="panel">
+    <h3>PNG 的砂金从哪来</h3>
+    <ul class="tight small">
+      <li>Wau–Bulolo（Morobe）：1922 年在 Koranga Creek 发现，1926 年 1 月发现 Upper Edie Creek，被称为 PNG"最富的砂金矿田"<sup class="c"><a href="#sources">44</a></sup>。</li>
+      <li>金产量从 1926/27 年度 84,768 盎司升到 1937/38 年度 403,652 盎司（1933/34 年度前为整个领地的出口数）<sup class="c"><a href="#sources">44</a></sup>；Bulolo 1932 年 3 月开始采金船作业，至 1939 年共建成 8 条<sup class="c"><a href="#sources">41</a></sup>。</li>
+      <li>Gold Mountain 在 Wabag 的 Mongae Creek 发现棱角状、结晶状的粗金<sup class="c"><a href="#sources">58</a></sup>；按地质常识，金粒棱角明显通常意味着搬运距离短、矿源不远（推断）。</li>
+      <li>更多产区见<a href="#map">地图</a>。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="view" id="v-grade" hidden>
+  <h2>怎么看品位</h2>
+  <div class="row small" style="gap:8px"><span class="pill warn">可信度：中等</span><span class="muted">方法来自权威文献，但多是美国 1934–1985 年的资料；换算系数（盘系数、松散系数）必须用你们自己的盘和砂砾标定。</span></div>
+  <div class="prose"><p><b>品位 = 每个原位立方米砂砾里含多少克金（g/m³）</b>。行业规范要求按原位干立方米报告，并把"总金量"和"按拟用工艺可回收的金量"分开<sup class="c"><a href="#sources">3</a></sup>；本站另外区分毛金和纯金。同一个数字背后有三个常见陷阱：</p>
+  <ul class="tight"><li><b>原位方还是松方？</b> 挖出来的砂砾会膨胀，美国亚利桑那一个矿区的 4 个实测值为 17%–54%<sup class="c"><a href="#sources">2</a></sup>。用松方算出来的品位偏低；把松方当原位方报储量，储量就被夸大。</li>
+  <li><b>毛金还是纯金？</b> 天然砂金含银，成色通常在 70%–95%<sup class="c"><a href="#sources">2</a></sup>。毛金重 × 成色 = 纯金重。PNG 砂金的成色目前没有找到可靠公开数据，要靠化验。</li>
+  <li><b>淘盘还是系统取样？</b> 淘盘是"半定量"，行业规范明确不能用于储量估算<sup class="c"><a href="#sources">3</a></sup>。</li></ul></div>
+
+  <div class="panel">
+    <h3>证据阶梯：越往下越可信，也越贵</h3>
+    <div class="ladder" id="ladder"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>淘盘换算器</h3>
+      <p class="small muted">标准 16 英寸金盘（平口装满）约 180 盘 = 1 原位立方码，即约 235 盘 = 1 原位立方米<sup class="c"><a href="#sources">1</a></sup>。不同的盘和砂砾差别很大（文献 150–200 盘/码），<b>一定要用你们自己的盘标定</b>：挖 1 个量好尺寸的原位方，数它能装多少盘。</p>
+      <form class="f" onsubmit="return false">
+        <label class="fld">盘系数（盘 / 原位 m³）<input id="pc-pf" type="number" value="235" step="1"></label>
+        <label class="fld">淘了几盘<input id="pc-n" type="number" value="10" step="1"></label>
+        <label class="fld">共称得毛金 mg<input id="pc-mg" type="number" value="2" step="0.1"></label>
+        <label class="fld">成色 %（未知留空）<input id="pc-f" type="number" step="0.1" placeholder="未知"></label>
+      </form>
+      <div class="tip" id="pc-out"></div>
+    </div>
+    <div class="panel">
+      <h3>一颗金花值多少品位</h3>
+      <p class="small muted">按 16 英寸盘、180 盘/立方码计算<sup class="c"><a href="#sources">1</a></sup>：</p>
+      <div class="tbl"><table>
+        <tr><th>金粒大小</th><th class="n">单粒重</th><th class="n">每盘 1 粒 ≈</th></tr>
+        <tr><td>20 目（约 0.8 mm）</td><td class="n">6.57 mg</td><td class="n">1,550 mg/m³</td></tr>
+        <tr><td>40 目（约 0.4 mm）</td><td class="n">0.91 mg</td><td class="n">214 mg/m³</td></tr>
+        <tr><td>60 目（约 0.25 mm）</td><td class="n">0.27 mg</td><td class="n">64 mg/m³</td></tr>
+      </table></div>
+      <p class="small">每盘里一粒 20 目的金，就相当于约 1.5 g/m³；而一粒 60 目的细金只有约 0.06 g/m³。<b>数金花不如称重</b>，金粒大小决定一切。</p>
+      <p class="xs muted">另一个口径（1934 年美国矿务局）：中粒约 2,200 粒/盎司（≈14 mg/粒），细粒约 12,000 粒/盎司（≈2.6 mg），粉金约 40,000 粒/盎司（≈0.78 mg）<sup class="c"><a href="#sources">2</a></sup>。"1 号/2 号/3 号金花"的编号在不同文献里方向相反，你们要书面定义自己的分级<sup class="c"><a href="#sources">1</a></sup><sup class="c"><a href="#sources">2</a></sup>。</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>现场取样规程（每个样品照做）</h3>
+    <ol class="steps">
+      <li><div><b>先画河谷草图，布点成线、横穿河道。</b> 同一条线上的坑间距从几米到约 20 米，看结果均匀程度；线与线间距约 30 米到一百多米。先疏后密，只在有希望的地方加密<sup class="c"><a href="#sources">2</a></sup>。</div></li>
+      <li><div><b>挖到基岩，整坑洗。</b> 金富集在砂砾层底部和基岩裂缝里；业内普遍认为应把坑里挖出的料全部洗掉<sup class="c"><a href="#sources">1</a></sup>。不要每隔几铲取一铲，不要把一桶料再分样<sup class="c"><a href="#sources">1</a></sup><sup class="c"><a href="#sources">2</a></sup>。</div></li>
+      <li><div><b>分层记录。</b> 每层写深度、颜色、颗粒、是否有黏土。地层变化时缩短取样间隔<sup class="c"><a href="#sources">2</a></sup>。</div></li>
+      <li><div><b>量原位体积。</b> 坑壁能立住就量长×宽×深；量不了就量松方或称重再换算，并记下用的松散系数<sup class="c"><a href="#sources">1</a></sup>。</div></li>
+      <li><div><b>记大石比例。</b> 剔除的大石占多少要估计出来，不能只挑大石缝里的细料——那等于"自己给自己加金"<sup class="c"><a href="#sources">1</a></sup>。</div></li>
+      <li><div><b>回收、清洗、称重。</b> 精矿晒干，用磁铁吸走磁铁矿，吹掉非磁性黑砂，用 1 mg 精度的天平称重，≥10 mg 的金粒单独称<sup class="c"><a href="#sources">1</a></sup>。<b>不要用汞</b>。</div></li>
+      <li><div><b>金装进标签小瓶保存。</b> 这些小瓶就是报告里品位数字的证据<sup class="c"><a href="#sources">59</a></sup>。</div></li>
+      <li><div><b>尾砂复淘。</b> 洗完的尾砂再淘一盘，记录还剩不剩金，用来判断回收率<sup class="c"><a href="#sources">2</a></sup>。</div></li>
+      <li><div><b>送样化验成色。</b> 品位用称重法；成色可以送化验。不要用火试金法直接测砂金品位，会严重高估<sup class="c"><a href="#sources">1</a></sup>。</div></li>
+    </ol>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>算平均品位的规则</h3>
+      <ul class="tight small">
+        <li><b>按体积加权</b>，不要把每盘、每坑的品位简单平均<sup class="c"><a href="#sources">1</a></sup>。本站"取样与品位"页的汇总已按此计算。</li>
+        <li><b>异常高值先复采</b>：复采结果低就用低值，或者按该地段的"正常高值"封顶；弄清高值原因之前不要随意打折<sup class="c"><a href="#sources">1</a></sup>。</li>
+        <li><b>预测和实际经常差很多。</b> 历史矿山的"实际回收 ÷ 预测"在 31%–277% 之间，同一矿区不同区块可以从 32% 到 149%<sup class="c"><a href="#sources">4</a></sup>。所以投设备前一定要做试采大样。</li>
+        <li>试采大样一般要几十到几百立方米，按实际生产方式处理（"plant run"），并检查尾砂<sup class="c"><a href="#sources">1</a></sup><sup class="c"><a href="#sources">4</a></sup>。</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>卖方给你看品位时的红旗</h3>
+      <ul class="tight small">
+        <li>拿淘盘结果当储量<sup class="c"><a href="#sources">3</a></sup>。</li>
+        <li>没说清是原位方还是松方，是毛金还是纯金（报告应写明金重、成色和所用金价）<sup class="c"><a href="#sources">1</a></sup>。</li>
+        <li>结果"太高"或"太整齐"；样品只在他指定的位置取<sup class="c"><a href="#sources">1</a></sup>。</li>
+        <li>用火试金报砂金品位<sup class="c"><a href="#sources">1</a></sup>；没有钻孔原始记录，或用了"放大系数"<sup class="c"><a href="#sources">1</a></sup>。</li>
+        <li>防"撒金"：取样点保密、工具当场清洗、当天完成、自己在他的高品位点复采，精矿用 20 倍双筒显微镜看有无金屑<sup class="c"><a href="#sources">1</a></sup>。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>单位换算</h3>
+      <form class="f" onsubmit="return false">
+        <label class="fld">数值<input id="uc-v" type="number" value="0.3" step="any"></label>
+        <label class="fld">单位<select id="uc-u"><option value="gm3">g/m³</option><option value="mgm3">mg/m³</option><option value="ozyd3">oz/yd³（金衡盎司/立方码）</option><option value="dwtyd3">dwt/yd³</option><option value="gyd3">g/yd³</option></select></label>
+        <label class="fld">松散系数 %（换算松方用）<input id="uc-s" type="number" value="25" step="1"></label>
+      </form>
+      <div class="tbl"><table id="uc-out"></table></div>
+      <p class="xs muted">1 金衡盎司 = 31.1035 g；1 dwt = 1.5552 g（NIST）<sup class="c"><a href="#sources">60</a></sup>；1 立方码 = 0.7646 m³。</p>
+    </div>
+    <div class="panel">
+      <h3>PNG 参考品位</h3>
+      <ul class="tight small">
+        <li>Hancock（1991）：传统手工矿工一般只开采 &gt;500 mg/m³ 的砂砾；机械化（挖掘机 + 滚筒筛）可以做到约一半的品位；PNG 有大片地区品位在 250–2,000 mg/m³<sup class="c"><a href="#sources">6</a></sup>。这是 1991 年金价下的结论，只作量级参考。</li>
+        <li>盈亏平衡品位取决于成本和金价，见<a href="#economics">盈利分析</a>。</li>
+        <li>MRA 在 Wau 设有小规模采矿培训中心，提供 1–4 级证书，登记费 K20<sup class="c"><a href="#sources">48</a></sup>。技术人员可以考虑去学。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-process" hidden>
+  <h2>开采流程</h2>
+  <div class="row small" style="gap:8px"><span class="pill warn">可信度：中等</span><span class="muted">回收率数据来自英国地质调查局 1997 年综述，原理通用；PNG 具体条件下的回收率要靠尾砂检测确认。</span></div>
+  <p class="lead">砂金开采本质上是<b>土方工程 + 重力选矿</b>：成本按每立方米算，不管里面有没有金。</p>
+  <div class="panel"><ol class="steps" id="proc-steps"></ol></div>
+  <div class="grid2">
+    <div class="panel">
+      <h3>回收率取决于金粒粗细<sup class="c"><a href="#sources">5</a></sup></h3>
+      <div class="tbl"><table>
+        <tr><th>方法</th><th class="n">0.1 mm</th><th class="n">0.2 mm</th><th class="n">0.5 mm</th><th class="n">1.0 mm</th></tr>
+        <tr><td>溪槽 Sluice</td><td class="n">20%</td><td class="n">56%</td><td class="n">88%</td><td class="n">96%</td></tr>
+        <tr><td>跳汰机 Jig</td><td class="n">48%</td><td class="n">74%</td><td class="n">95%</td><td class="n">98%</td></tr>
+      </table></div>
+      <ul class="tight small">
+        <li>管理良好的商业溪槽回收率 80%–100%，简易小溪槽可能低于 50%<sup class="c"><a href="#sources">5</a></sup>。</li>
+        <li>最多可有 60% 的金（主要是 ≤100 µm 的细金）流入尾砂<sup class="c"><a href="#sources">5</a></sup>；先擦洗筛分可提高回收率最多 20%<sup class="c"><a href="#sources">5</a></sup>。</li>
+        <li>离心选矿机对细金有效，下限约 30 µm<sup class="c"><a href="#sources">5</a></sup>。PNG 部分砂金细金比例可达 50%<sup class="c"><a href="#sources">5</a></sup>，取样时要记录金粒粗细。</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>水和汞</h3>
+      <ul class="tight small">
+        <li>洗选用水量大：固定式洗选厂每立方码砂砾用水 650–2,000 加仑，折合每立方米约 3.2–9.9 m³ 水<sup class="c"><a href="#sources">32</a></sup>；Savona 滚筒筛的标称数据折算约 2–2.5 m³（推断）。规划时可按 3–6 m³ 水 / m³ 砂砾估算，并修沉淀池循环用水。。</li>
+        <li>PNG 小矿工普遍用汞，Bulolo、Watut 一带报告了高汞水平<sup class="c"><a href="#sources">61</a></sup>。PNG 溪槽里用的汞最多 30% 流入河流<sup class="c"><a href="#sources">5</a></sup>。正规项目应采用无汞重力流程；历史汞污染还可能成为接手方的清理责任。</li>
+        <li>法规按"化学处理"和年处理量分级<sup class="c"><a href="#sources">11</a></sup>；用汞或氰化物很可能被视为化学处理、许可级别更高（推断，需向 CEPA 确认，见<a href="#permits">办证路线</a>）。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-equipment" hidden>
+  <h2>设备配置</h2>
+  <div class="row small" style="gap:8px"><span class="pill bad">可信度：较低</span><span class="muted">设备规格有来源，但三档配置、投入、用水、人员多为推断；价格是海外二手挂牌，要用莱城报价替换。</span></div>
+  <p class="lead">三档参考配置。<span class="pill ok">有来源</span> 表示数字直接来自来源，<span class="pill warn">推断</span> 表示根据来源数据推算，需要拿到报价后替换。</p>
+  <div class="panel"><div class="tbl"><table id="eq-table"></table></div></div>
+  <div class="grid2">
+    <div class="panel">
+      <h3>油耗参考（Cat 性能手册）<sup class="c"><a href="#sources">28</a></sup></h3>
+      <div class="tbl"><table>
+        <tr><th>机型</th><th class="n">低 L/h</th><th class="n">中 L/h</th><th class="n">高 L/h</th></tr>
+        <tr><td>Cat 320（20 t 挖掘机）</td><td class="n">9.2</td><td class="n">11.6</td><td class="n">14.1</td></tr>
+        <tr><td>Cat 330（30 t 挖掘机）</td><td class="n">14.0</td><td class="n">17.9</td><td class="n">21.8</td></tr>
+        <tr><td>Cat D6 推土机</td><td class="n">14.2</td><td class="n">18.2</td><td class="n">22.3</td></tr>
+        <tr><td>Cat 950M 装载机</td><td class="n">9.0</td><td class="n">11.4</td><td class="n">13.9</td></tr>
+      </table></div>
+      <p class="small">PNG 柴油（莫尔兹比港）2026-10-08 起 K5.90/L，9 月为 K4.90（ICCC 核定零售价，含补贴）<sup class="c"><a href="#sources">27</a></sup>；2025 年 6 月为 K3.85<sup class="c"><a href="#sources">73</a></sup>。莱城价格未公布。油价一年多涨了约 53%，预算要留余量。</p>
+    </div>
+    <div class="panel">
+      <h3>价格参考（二手为主）</h3>
+      <ul class="tight small">
+        <li>二手 Cat 320（美国经销商）：2017–2021 年、4,000–9,500 小时，US$79,500–155,000；2024 年低小时数 US$169,000–200,000<sup class="c"><a href="#sources">33</a></sup>。</li>
+        <li>二手 Cat D6T：2016 年、9,224 小时 US$97,500；欧洲 2016–2018 年约 €152,500<sup class="c"><a href="#sources">62</a></sup>。国产山推 SD22（2023 年、800 小时）约 €37,263<sup class="c"><a href="#sources">62</a></sup>。</li>
+        <li>iCON i150 离心选矿机：US$11,900–13,500<sup class="c"><a href="#sources">34</a></sup>。</li>
+        <li>0.001 g 天平：US$1,354–2,930<sup class="c"><a href="#sources">62</a></sup>；摇床（国产）US$1,200–1,400<sup class="c"><a href="#sources">62</a></sup>。</li>
+        <li>网上"2025 年 Cat 320D、几十小时、约 4.9 万澳元"一类的国内挂牌，型号已停产，可能是翻新或水货，买前必须验机<sup class="c"><a href="#sources">33</a></sup>。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <h3>在 PNG 买设备和运设备</h3>
+      <ul class="tight small">
+        <li>Cat 在 PNG 的独家经销商 Hastings Deering 在<b>莱城</b>有网点<sup class="c"><a href="#sources">36</a></sup>；Komatsu 授权经销商 Komatsu Niugini 在<b>莱城 Butibum Road</b>有网点，Wau（Hidden Valley）也有<sup class="c"><a href="#sources">35</a></sup>。</li>
+        <li>上海 → 莱城 20 尺柜：一个来源报 US$3,500–5,800、30–45 天<sup class="c"><a href="#sources">38</a></sup>，另一个报 US$13,377 起（门到门含税费）、约 9 天<sup class="c"><a href="#sources">37</a></sup>，差 3 倍。挖掘机、推土机要用框架箱或滚装船，<b>运费需要询价</b>。</li>
+        <li>进口：PwC 称大部分制造业投入（含厂房和机器设备）无关税、GST 10%<sup class="c"><a href="#sources">20</a></sup>；但 2009 年政府公报列挖掘机等（HS 8429）税率 10%。<b>以 PNG 海关为准</b>。</li>
+        <li>莱城当地设备租赁价格：未找到公开数据，需向当地询价。</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>人工与气候</h3>
+      <ul class="tight small">
+        <li>最低工资 2026 年 1 月起 K5.00/小时，2027 年 K5.25，2028 年 K5.50<sup class="c"><a href="#sources">39</a></sup>。</li>
+        <li>莱城年降雨约 4,433 mm，最湿是 6–8 月（每月约 480–520 mm）<sup class="c"><a href="#sources">40</a></sup>。Bulolo 约 1,600 mm/年<sup class="c"><a href="#sources">41</a></sup>，内陆河谷明显干一些，但月度分布未核实。</li>
+        <li>没有找到量化 Morobe 雨季停工天数的资料。规划时内陆可先按每年 250–280 个工作日估算（推断），再用当地数据修正。</li>
+        <li>参考：加拿大育空全部生产砂金矿（2015 年，108 座）的成本结构为人工 29%、燃油 19%、设备折旧 19%、维修与营地 18%<sup class="c"><a href="#sources">63</a></sup>。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-economics" hidden>
+  <h2>盈利分析</h2>
+  <div class="row small" style="gap:8px"><span class="pill bad">可信度：较低（输入） / 较高（公式）</span><span class="muted">计算公式已用 27 个手算样例逐一测试通过；但默认参数是示意假设，结果的可信度取决于你们填的实测品位和成本。</span></div>
+  <p class="lead">调参数，看一年能赚多少、多久回本、土地主怎么分最合理。默认值都是示意假设，需要用你们的实测品位和报价替换。</p>
+  <div class="grid2">
+    <div class="panel">
+      <h3>参数</h3>
+      <form class="f" id="mdl" onsubmit="return false">
+        <label class="fld">品位 g/m³（纯金）<input id="p-grade" type="number" step="0.01" value="0.3"></label>
+        <label class="fld">日处理量 m³<input id="p-m3" type="number" step="10" value="400"></label>
+        <label class="fld">年作业天数<input id="p-days" type="number" step="5" value="250"></label>
+        <label class="fld">回收率 %<input id="p-rec" type="number" step="1" value="80"></label>
+        <label class="fld">金价 US$/oz<input id="p-price" type="number" step="10" value="4024"></label>
+        <label class="fld">买家给价 %<input id="p-buyer" type="number" step="0.5" value="95"></label>
+        <label class="fld">每 m³ 综合成本 US$<input id="p-cost" type="number" step="0.5" value="10"></label>
+        <label class="fld">权利金 + 规费 %<input id="p-roy" type="number" step="0.1" value="2.5"></label>
+        <label class="fld">前期投入 US$<input id="p-capex" type="number" step="10000" value="600000"></label>
+        <label class="fld">汇率 PGK/USD<input id="p-fx" type="number" step="0.01" value="4.2988"></label>
+        <label class="fld">方案 C：土地主占净利 %<input id="p-lprofit" type="number" step="1" value="30"></label>
+        <label class="fld">方案 D：每 m³ 付 K<input id="p-lm3" type="number" step="0.5" value="5"></label>
+        <label class="fld">方案 E：贡金分成 % 毛收入<input id="p-trib" type="number" step="1" value="15"></label>
+        <label class="fld">方案 E：占地费 K/月<input id="p-occ" type="number" step="100" value="2000"></label>
+        <label class="fld">我方权益 %<input id="p-own" type="number" step="1" value="100"></label>
+        <label class="fld">所得税 %<input id="p-tax" type="number" step="1" value="30"></label>
+        <div class="row full"><button type="button" id="p-reset">恢复默认</button><button type="button" id="p-save" data-w>保存为方案</button><span class="status" id="p-msg"></span></div>
+      </form>
+      <p class="xs muted">"我方权益"：作为贡金承包方（contract miner）时为 100%，即你方承担全部成本、拿扣除分成后的全部利润；若是在公民控股的 ML 公司持股，则最多 49%<sup class="c"><a href="#sources">7</a></sup>。</p>
+    </div>
+    <div class="panel">
+      <h3>年度结果（US$）</h3>
+      <div class="stats" id="r-stats"></div>
+      <div class="tbl"><table id="r-table"></table></div>
+      <p class="xs muted">税后利润按"运营利润 × (1 − 所得税)"简化计算，未计折旧抵税、外资利润汇出税（15%）、治安、社区补偿、复垦、取样化验<sup class="c"><a href="#sources">19</a></sup>。方案 E 依据 MRA 贡金协议范本：投产前每月占地费不少于 K2,000，按 60% 给持有人、40% 给社区；投产后按毛销售额分成<sup class="c"><a href="#sources">8</a></sup>。模型把 2.5% 权利金和规费都按毛收入扣，偏保守；规费实际向出口商收取，若买家给价已扣除，会重复计算。默认的每年 10 万 m³ 处理量超过 5 万吨，环保许可属二级 B 类<sup class="c"><a href="#sources">11</a></sup>。</p>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="row"><h3>品位 × 金价：运营利润热力图（US$m/年）</h3><span class="spacer"></span><select id="hm-method" style="max-width:220px"></select></div>
+    <div class="tbl"><table class="heat" id="heat"></table></div>
+    <div class="legend"><span><i style="background:var(--bad)"></i>亏损</span><span><i style="background:var(--sunk)"></i>接近盈亏平衡</span><span><i style="background:var(--ok)"></i>盈利</span><span>其他参数取上方输入值；粗框为当前品位和金价</span></div>
+  </div>
+  <div class="panel">
+    <h3>36 个月累计现金流</h3>
+    <form class="f" onsubmit="return false" style="max-width:760px">
+      <label class="fld">取样到投产前的月数<input id="cf-lead" type="number" value="6" step="1" min="0"></label>
+      <label class="fld">爬坡月数（产量从 40% 到 100%）<input id="cf-ramp" type="number" value="3" step="1" min="0"></label>
+      <label class="fld">雨季减产 %<input id="cf-wet" type="number" value="40" step="5" min="0" max="100"></label>
+      <label class="fld">雨季月份<input id="cf-wetm" value="6,7,8"></label>
+      <label class="fld">投产月份（1–12）<input id="cf-start" type="number" value="5" min="1" max="12"></label>
+    </form>
+    <div class="svgbox" id="cf-chart"></div>
+    <p class="small" id="cf-note"></p>
+  </div>
+  <div class="panel"><h3>已保存方案</h3><div class="tbl"><table id="sc-table"></table></div></div>
+</section>
+
+<section class="view" id="v-permits" hidden>
+  <h2>办证路线</h2>
+  <div class="row small" style="gap:8px"><span class="pill warn">可信度：中等</span><span class="muted">法条、范本条款、税率、收费核对过原文；但法律处于变动期，部分费用和时限待核实，合作结构必须由 PNG 律师确认。</span></div>
+  <div class="alert"><b>外资能走的合法路径很窄。</b> 砂金开采租约（AML）只发给土地所有人；砂金类采矿租约（ML）要求公民持股 ≥51%<sup class="c"><a href="#sources">7</a></sup>。《矿业法》允许 AML 持有人通过<b>贡金协议</b>引入外国企业提供资金和设备，协议须经部长批准并在 MRA 登记才生效<sup class="c"><a href="#sources">7</a></sup><sup class="c"><a href="#sources">14</a></sup>；MRA 范本也设有承包方"国籍或注册国"栏<sup class="c"><a href="#sources">8</a></sup>。但有三重障碍：① 现行 IPA 保留行业清单把"砂金开采"整体保留给本国人，<b>目前没有任何外资企业获准从事这一活动</b>，IPA 自己也承认清单与矿业法规不一致，正提议收窄为"无租约的手工开采"，结果未公布<sup class="c"><a href="#sources">14</a></sup>；② 2021 年政策把砂金开采和收金、出口都保留给本国公民<sup class="c"><a href="#sources">53</a></sup>；③ 总理承诺 2027 年大选前立法<sup class="c"><a href="#sources">21</a></sup>。<b>任何投入前，请 PNG 本地律师出具书面意见。</b></div>
+  <div class="panel">
+    <div class="row"><h3>路线图</h3><span class="spacer"></span><span class="legend"><span><span class="pill ok">有来源</span></span><span><span class="pill warn">待核实</span></span></span></div>
+    <ol class="roadmap" id="roadmap"></ol>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <h3>MRA 贡金协议范本要点<sup class="c"><a href="#sources">8</a></sup></h3>
+      <ul class="tight small">
+        <li>只能用于 AML 或砂金类 ML。</li>
+        <li>须经矿业部长批准并在 MRA 登记后才有效（《矿业法》第 119 条）<sup class="c"><a href="#sources">7</a></sup>。</li>
+        <li>投产前每月预付占地费，可协商但<b>不低于 K2,000/月</b>，60% 给租约持有人、40% 给受影响社区代表。</li>
+        <li>投产后按从买金商收到的<b>毛销售额</b>每月支付分成和权利金；若投产后停产，占地费恢复缴纳。</li>
+        <li>黄金在售出前归租约持有人所有，不得囤积超过 1 个月；非法销售将立即终止协议并可能吊销租约。</li>
+        <li>所有销售须通过央行持牌出口商或其关联收金商。</li>
+        <li>承包方承担全部成本、税费；双方可提前 30 天通知终止；纠纷交首席监督官（Chief Warden）。</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>税费速查</h3>
+      <div class="tbl"><table>
+        <tr><th>项目</th><th>标准</th></tr>
+        <tr><td>矿业权利金</td><td>2%（净冶炼收益）<sup class="c"><a href="#sources">20</a></sup>；砂金租约适用的权利金依据待核实（贡金范本援引 1977 年矿业法第 XI 部分）<sup class="c"><a href="#sources">8</a></sup></td></tr>
+        <tr><td>MRA 砂金规费</td><td>出口价值的 0.5%（按 LME 早盘价），2019-05-29 起由 0.25% 上调<sup class="c"><a href="#sources">18</a></sup><sup class="c"><a href="#sources">74</a></sup></td></tr>
+        <tr><td>企业所得税</td><td>居民公司 30%；外国公司常设机构 30% + 15% 汇出税，约 40.5%<sup class="c"><a href="#sources">19</a></sup></td></tr>
+        <tr><td>非居民预提税（2026 起统一）</td><td>股息 15%、利息 15%、管理/技术费 15%<sup class="c"><a href="#sources">69</a></sup></td></tr>
+        <tr><td>GST</td><td>10%，出口零税率<sup class="c"><a href="#sources">20</a></sup>；年营业额 &gt; K250,000 须登记<sup class="c"><a href="#sources">70</a></sup></td></tr>
+        <tr><td>AML 申请费 / 年租</td><td>K250<sup class="c"><a href="#sources">10</a></sup> / 最高 K15<sup class="c"><a href="#sources">74</a></sup></td></tr>
+        <tr><td>ML 申请费（按面积）</td><td>K2,500–50,000<sup class="c"><a href="#sources">10</a></sup></td></tr>
+      </table></div>
+      <p class="xs muted">新《Mining Bill》草案拟把权利金提高到 5%（国家入股时）或毛收入的 10%（不入股时），尚未通过<sup class="c"><a href="#sources">72</a></sup>。</p>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-map" hidden>
+  <h2>地图</h2>
+  <div class="row small" style="gap:8px"><span class="pill ok">可信度：较高</span><span class="muted">城镇坐标来自维基百科并复算距离；历史产区圆点为大致位置。</span></div>
+  <p class="lead">经纬度示意图（不含海岸线）。候选矿点填了 GPS 会自动出现在右图。</p>
+  <div class="grid2">
+    <div class="panel"><h3>PNG 主要城镇与历史砂金产区</h3><div class="svgbox" id="map-png"></div></div>
+    <div class="panel"><h3>Morobe：莱城 – Bulolo – Wau</h3><div class="svgbox" id="map-mor"></div>
+      <ul class="tight small">
+        <li>莱城是 PNG 最大的货运港和工业中心，也是高地公路（Highlands Highway）起点；Nadzab 机场距市区 56 km；莱城与莫尔兹比港之间没有公路<sup class="c"><a href="#sources">40</a></sup>。</li>
+        <li>Wau–Bulolo 公路从莱城 9 Mile 起，路况很差<sup class="c"><a href="#sources">46</a></sup>；是 Wau 到莱城唯一的公路，常有塌方<sup class="c"><a href="#sources">75</a></sup>。直线距离：莱城–Bulolo 约 65 km，莱城–Wau 约 75 km，Bulolo–Wau 约 17 km（按坐标计算）。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel"><h3>历史砂金产区<sup class="c"><a href="#sources">44</a></sup></h3><div class="tbl"><table id="dist-table"></table></div></div>
+</section>
+
+<section class="view" id="v-policy" hidden>
+  <div class="row"><h2>政策追踪</h2><span class="spacer"></span><button id="pol-new" data-w>新增事件</button></div>
+  <p class="lead">与砂金相关的政策和执法动态，最新的在上。每周的新闻检索结果也会写到这里。</p>
+  <div class="panel" id="pol-form-wrap" hidden>
+    <form class="f" id="pol-form">
+      <label class="fld">日期<input id="po-date" type="date" required></label>
+      <label class="fld">类型<select id="po-type"><option>立法 / 政策</option><option>执法</option><option>数据 / 报告</option><option>市场</option></select></label>
+      <label class="fld full">事件<input id="po-title" required></label>
+      <label class="fld full">来源链接<input id="po-url" type="url"></label>
+      <div class="row full"><button class="primary" type="submit">保存</button><button type="button" id="pol-cancel">取消</button><span class="status" id="pol-msg"></span></div>
+    </form>
+  </div>
+  <div class="panel"><div class="tbl"><table id="pol-table"></table></div></div>
+</section>
+
+<section class="view" id="v-glossary" hidden>
+  <h2>词汇表</h2>
+  <p class="lead">Tok Pisin（皮钦语）单词来自 Freelang 词典<sup class="c"><a href="#sources">45</a></sup>。标"组合词"的说法由已核实的单词组成，但没有找到词典收录，现场使用前请向当地人确认。</p>
+  <div class="panel"><div class="tbl"><table id="gl-table"></table></div></div>
+</section>
+
+<section class="view" id="v-sources" hidden>
+  <h2>来源</h2>
+  <p class="lead">本站所有数字的出处。核查日期 2026-10-29。完整研究底稿见 <a href="https://claude.ai/artifact/D5AiZRD7ZpZec9UF3bbTCD" target="_blank" rel="noopener">《巴布亚新几内亚砂金矿研究》</a>。</p>
+  <div class="panel">
+    <h3>核查记录</h3>
+    <ul class="tight small">
+      <li><b>2026-10-29 来源核对：</b>所有数字来自实际打开的网页或文件；法律条文、贡金协议范本、淘盘换算原始数据由我再次对照原文抽查。</li>
+      <li><b>2026-10-29 独立复核：</b>另派复核助手在不看结论的情况下逐条对照来源，发现并已修正：环保许可分级漏了"年处理 5 万吨"门槛；总理承诺日期应为 10 月 15 日；Bulolo 采金船为 1932–1939 年陆续建成 8 条；Sudest 人数口径；IPA 保留行业清单目前没有外资企业获准从事砂金开采；另修正 11 处引用编号或表述过度。</li>
+      <li><b>2026-10-29 计算测试：</b>用独立手算的 27 个样例测试品位（坑尺寸、淘盘、松方）、淘盘换算、单位换算、五种分成方案、盈亏平衡品位、热力图和现金流，全部通过。</li>
+      <li><b>仍未核实：</b>PNG 砂金成色；砂金租约适用的权利金依据；AML 年租；CEPA 和 ICA 收费；实际办证时长；莱城设备租价与重型设备海运费；HS 8429 进口关税；Morobe 雨季停工天数；Tok Pisin 组合词。</li>
+      <li><b>必须由专业人士确认：</b>合作结构的合法性（PNG 律师）、具体矿点租约与 EL 状况（MRA Wau 办事处）、取样方案与品位（持证地质师）、成色（化验室）。</li>
+    </ul>
+  </div>
+  <div class="panel"><ol id="src-list" class="small" style="margin:0;padding-left:28px;display:grid;gap:4px"></ol></div>
+</section>
+
+</main>
+<div class="toast" id="toast" hidden></div>
+<script>
+(function(){
+"use strict";
+/* ================= static knowledge data ================= */
+const SOURCES={
+1:["J.H. Wells, Placer Examination: Principles and Practice（美国土地管理局技术公报 4，1969/1985 重印）","https://www.911metallurgist.com/wp-content/uploads/2016/10/Placer-Gold-Geology.pdf"],
+2:["Gardner & Johnson, Placer Mining in the Western United States（美国矿务局 IC 6786，1934）","https://dggs.alaska.gov/webpubs/usbm/ic/text/ic6786.PDF"],
+3:["CIM 储量估算最佳实践：Placer Deposits","https://MRMR.CIM.org/media/1037/placer-deposits-estimation-guidelines.pdf"],
+4:["A.G. Fricker, Placer gold – measurement and recovery（AusIMM 取样研讨会，1976）","https://app.ingemmet.gob.pe/biblioteca/pdf/P-405.pdf"],
+5:["Mitchell, Evans & Styles, A review of gold particle-size and recovery methods（英国地质调查局 WC/97/14，1997）","https://nora.nerc.ac.uk/id/eprint/9014/1/A_review_of_gold_particle_size_and_recovery_methods_WC-97-014.pdf"],
+6:["G. Hancock, An economic appraisal of small to medium scale alluvial gold mining systems in PNG（AusIMM，1991，摘要）","https://www.ausimm.com/publications/conference-proceedings/png-geology-exploration-and-mining-conference-rabaul-june-1991/an-economic-appraisal-of-small-to-medium-scale-alluvial-gold-mining-systems-in-papua-new-guinea/"],
+7:["Mining Act 1992（PacLII）","https://pacliirms.paclii.org/pg/legis/num_act/ma199281"],
+8:["MRA 贡金协议范本 Tribute Agreement Pro-forma（2018 修订）","https://mra.gov.pg/wp-content/uploads/2026/03/Tribute-Agreement-Pro-forma-April_revised_2018.doc"],
+9:["MRA 开发方案范本 Proposal for Development（AML/ML，2014）","https://mra.gov.pg/wp-content/uploads/2026/03/Proforma-for-Proposal-For-Development-PFD-AML-ML-tenements_29092014.docx"],
+10:["MRA Scheduled Fees","https://mra.gov.pg/wp-content/uploads/2021/08/Scheduled-Fees.pdf"],
+11:["Environment (Prescribed Activities) Regulation 2002（亚洲开发银行转载）","https://lpr.adb.org/sites/default/files/resource/586/png-environment-%28prescribed-activities%29-regulation-2002.pdf.pdf"],
+12:["IPA Prescribed Forms 收费","https://www.ipa.gov.pg/public/prescribedforms.aspx"],
+13:["Investment Promotion (Amendment) Act 2023（PacLII）","https://rms.paclii.org/pg/legis/num_act/ipa2023358"],
+14:["IPA 保留行业清单（RAL）审查咨询文件，2025","https://www.ipa.gov.pg/Documentation/PG/RALReview/ConsultationPaperReviewOfReservedActivitiesList.pdf"],
+15:["ICA 就业签证","https://ica.gov.pg/visa/work/employment"],
+16:["BPNG 黄金出口牌照申请清单","https://www.bankpng.gov.pg/sites/default/files/2024-09/Gold-Export-Licence-Requirements-Licence-Application-checklist1.pdf"],
+17:["BPNG 2024 年持牌砂金出口商名单","https://bankpng.gov.pg/sites/default/files/2024-10/List%20of%20Alluvial%20Gold%20Exporters%202024.pdf"],
+18:["PNG 政府公报 G443（2019-05-29，砂金规费 0.5%）","https://pacliirms.paclii.org/pg/other/PGGovGaz/2019/443.pdf"],
+19:["PwC Worldwide Tax Summaries：PNG 企业所得税（2026-09-23 复核）","https://taxsummaries.pwc.com/papua-new-guinea/corporate/taxes-on-corporate-income"],
+20:["PwC Worldwide Tax Summaries：PNG 其他税种","https://taxsummaries.pwc.com/Papua-New-Guinea/Corporate/Other-taxes"],
+21:["PM Marape backs Juffa committee report（总理与内阁办公室，2026-10-16）","https://www.pmnec.gov.pg/pm-marape-backs-juffa-committee-report-pledges-alluvial-mining-law-reforms-national-gold-refinery-and-crackdown-on-illegal-gold-exports/"],
+22:["Governor Juffa Tables Alluvial Gold Report（议会公共部门改革特别委员会，2026-10-15）","https://spcpsr.gov.pg/2026/10/15/governor-juffa-tables-alluvial-gold-report-the-largest-continuous-theft-of-national-wealth/"],
+23:["105 foreign nationals deported out of Morobe today（NBC，2025-10-29）","https://www.nbc.com.pg/post/28627/105-foreign-nationals-deported-out-of-morobe-today"],
+24:["Eight Chinese nationals apprehended for illegal mining（NBC，2025-06-30）","https://www.nbc.com.pg/post/22952/eight-chinese-nationals-apprehended-for-illegal-mining"],
+25:["Regulating alluvial mining hard: MRA（The National，2025-06-05）","https://www.thenational.com.pg/regulating-alluvial-mining-hard-mra/"],
+26:["FATF gray lists Kuwait, Papua New Guinea（ACAMS，2026-02）","https://www.acams.org/en/news/fatf-gray-lists-kuwait-papua-new-guinea"],
+27:["ICCC 2026 年 10 月燃油价格公告","https://iccc.gov.pg/2026/10/07/press-statement-announcement-of-fuel-prices-october-2026/"],
+28:["Cat Performance Handbook 油耗表（Wheeler Cat，2022）","https://wheelercat.com/wp-content/uploads/2023/01/Cat-Performance-Handbook-from-VST-fuel-consumption-2022-12-09T21-20-09.pdf"],
+29:["育空砂金矿图集：Tatlow Placer Mines","https://ygsftp.gov.yk.ca/ygsftp/publications/placer_atlas/tatlow_placer_mines_quartz_creek.pdf"],
+30:["Yukon Placer Mine Income Model（2008 草稿）","https://emrlibrary.gov.yk.ca/emrlibrary/minerals/placer/yukon-placer-mine-income-model-2008.pdf"],
+31:["BLM Koyukuk 矿区经济预可研（阿拉斯加）","https://www.blm.gov/documents/national-office/blm-library/report/economic-prefeasibility-studies-mining-koyukuk-mining"],
+32:["Gravity Gold Process Water Requirements（911 Metallurgist）","https://www.911metallurgist.com/blog/gravity-gold-process-water-requirements/"],
+33:["TractorHouse：二手 Cat 320 挂牌","https://www.tractorhouse.com/listings/for-sale/caterpillar/320/crawler-excavators/1032"],
+34:["iCON i150 离心选矿机（911 Metallurgist）","https://www.911metallurgist.com/equipment/i150-icon-concentrator/"],
+35:["Komatsu Niugini Limited（Komatsu Australia，2026）","https://www.komatsu.com/en-au/newsroom/2026/komatsu-niugini-limited"],
+36:["Hastings Deering（Cat 经销商页）","https://www.cat.com/en_AU/support/dealers-in-region/hastings-deering.html"],
+37:["Cogoport：上海–莱城运价","https://www.cogoport.com/rates/shanghai-sp-to-lae-sp"],
+38:["GoodHope Freight：PNG 海运参考价","https://goodhopefreight.com/papua-new-guinea.html"],
+39:["PNG minimum wage set to rise in January（Business Advantage PNG，2025-09-24）","https://www.businessadvantagepng.com/papua-new-guineas-minimum-wage-set-to-rise-in-january/"],
+40:["Wikipedia：Lae","https://en.wikipedia.org/wiki/Lae"],
+41:["Wikipedia：Bulolo","https://en.wikipedia.org/wiki/Bulolo"],
+42:["Wikipedia：Wau, Papua New Guinea","https://en.wikipedia.org/wiki/Wau,_Papua_New_Guinea"],
+43:["Marape to table alluvial mining law（The National，2026-10-19）","https://www.thenational.com.pg/marape-to-table-alluvial-mining-law/"],
+44:["Hank Nelson, Black, White & Gold: Goldmining in PNG 1878–1930（ANU Press）","https://press-files.anu.edu.au/downloads/press/p347033/html/"],
+45:["Freelang Tok Pisin–English 词典","https://www.freelang.net/online/tok_pisin.php"],
+46:["Wau–Bulolo 公路纳入 Connect PNG（PNG 政府，2024-02-02）","https://info.gov.pg/national-government-to-take-full-responsibility-of-wau-bulolo-highway-under-connect-png/"],
+47:["《巴布亚新几内亚砂金矿研究》（本项目研究底稿）","https://claude.ai/artifact/D5AiZRD7ZpZec9UF3bbTCD"],
+48:["MRA 小规模采矿","https://mra.gov.pg/regulatory/smallscalemining/"],
+49:["MRA：Awareness on the Alluvial Mining Sector（2024-08-16）","https://mra.gov.pg/wp-content/uploads/2024/08/Awareness-on-the-Alluvial-Mining-Sector.pdf"],
+50:["Parliamentary committee calls for action（NBC，2025-10-02）","https://www.nbc.com.pg/post/27137/parliamentary-committee-calls-for-action"],
+51:["Gold worth K1.3 billion drained yearly, says report（The National，2025-10-08）","https://www.thenational.com.pg/gold-worth-k1-3-billion-drained-yearly-says-report/"],
+52:["Placer Sampling and Reserve Estimation（911 Metallurgist，2018）","https://www.911metallurgist.com/blog/placer-sampling-reserve-estimation/"],
+53:["MRA：Ministerial Update on the Mining Sector（2024）","https://mra.gov.pg/wp-content/uploads/2024/03/MINISTERIAL-UPDATE-ON-THE-MINING-SECTOR.pdf"],
+54:["Current price of gold: October 27, 2026（Fortune）","https://fortune.com/article/current-price-of-gold-10-27-2026/"],
+55:["OFX：USD to PGK（2026-10-29）","https://www.ofx.com/en-au/exchange-rates/usd-to-pgk/"],
+56:["Alluvial mining reserved for citizens: Minister（The National，2026-06-10）","https://www.thenational.com.pg/alluvial-mining-reserved-for-citizens-minister/"],
+57:["Types of Placers（911 Metallurgist）","https://www.911metallurgist.com/blog/list-types-placers"],
+58:["Gold Mountain Ltd：PNG Gold Projects","https://goldmountainltd.com.au/png-gold-projects/"],
+59:["Placer Assaying: the Mechanics and Chemistry（INGEMMET P-399）","https://app.ingemmet.gob.pe/biblioteca/pdf/P-399.pdf"],
+60:["NIST：Precious Metals Conversion Information（2015）","https://nist.gov/document/precious-metals-conversion-information-march2015pdf"],
+61:["H. Lole, The Trend in Artisanal and Small-Scale Mining Development in PNG（2005）","https://www.delvedatabase.org/uploads/resources/The-Trend-in-Artisanal-and-Small-Scale-Mining-Development-in-Papua-New-Guinea.pdf"],
+62:["设备价格挂牌：Surplus Record（D6T）、Machinery Trader EU、Truck1（山推 SD22）、Marshall Scientific（天平）、china.org.ru（摇床）","https://surplusrecord.com/listing/caterpillar-d6t-lgp-9224-hours-s-n-rad00907-2016-1093623/",[["Machinery Trader EU","https://machinerytrader.eu/listings/for-sale/caterpillar/dozers/1025?Page=6"],["Truck1 SD22","https://www.truck1.my/construction-machinery/bulldozers/shantui-sd-22-a10605283.html"],["Marshall Scientific","https://new.marshallscientific.com/collections/analytical-balances/balance-readability_0-001-g"],["china.org.ru 摇床","https://china.org.ru/product/60384279749"]]],
+63:["Yukon Placer Mining Economic Profile（2018-03-29）","https://www.kpma.ca/wp-content/uploads/2018/09/Yukon-Placer-Economic-Profile-Final-29MAR18.pdf"],
+64:["The Mount Kare story（Down To Earth，1994）","https://www.indiaenvironmentportal.org.in/articles/the-mount-kare-story"],
+65:["MRA：History of mining in PNG","https://mra.gov.pg/wp-content/uploads/2025/07/history-of-mining-in-papua-new-guinea.pdf"],
+66:["Land Groups Incorporation (Amendment) Act 2009（PacLII）","https://pacliirms.paclii.org/pg/legis/num_act/lgia2009372"],
+67:["ICA 工作许可手册","https://ica.gov.pg/ica-work-permit-handbooks-2022/work-permit-and-visa-information"],
+68:["CEPA 审批时限（The National，2022-07-29）","https://www.thenational.com.pg/?p=401075"],
+69:["PwC Worldwide Tax Summaries：PNG 预提税","https://taxsummaries.pwc.com/papua-new-guinea/corporate/withholding-taxes"],
+70:["Goods and services tax (GST) in PNG（Business Advantage PNG）","https://businessadvantagepng.com/goods-and-services-tax-gst-in-papua-new-guinea"],
+71:["Prime Minister Marape Directs Review of Mining Agreements（总理与内阁办公室，2026-02-03）","https://www.pmnec.gov.pg/prime-minister-marape-directs-review-of-mining-agreements-amid-record-commodity-prices/"],
+72:["Wide-ranging reforms to overhaul PNG mining sector（Allens，2025）","https://www.allens.com.au/insights-news/insights/2025/03/wide-ranging-reforms-to-overhaul-png-mining-sector/"],
+73:["ICCC 2025 年 6 月指示性零售油价","https://iccc.gov.pg/2025/06/06/indicative-retail-fuel-prices-june-2025/"],
+74:["SMEs in alluvial mining sector（The National / MRA，2020-03-19）","https://www.thenational.com.pg/smes-in-alluvial-mining-sector/"],
+75:["PMV drivers call for Bulolo highway maintenance（EMTV，2018-01-09）","https://emtv.com.pg/pmv-drivers-call-for-bulolo-highway-maintenance/"]
+};
+const C=n=>`<sup class="c"><a href="#sources" data-src="${n}">[${n}]</a></sup>`;
+
+const STATUSES=[["candidate","候选"],["visited","已考察"],["sampling","取样中"],["negotiating","谈判 / 办证"],["selected","选定"],["dropped","放弃"]];
+const PROVINCES=["Morobe（莱城 / Wau / Bulolo）","East Sepik","Eastern Highlands","Enga","Milne Bay","Oro (Northern)","Western","West Sepik","Bougainville","其他 / 不清楚"];
+const TENURE=["不清楚","无租约（土地主手工采）","AML 已有","AML 申请中","ML（砂金）已有","ML 申请中","其他"];
+const SCORE_KEYS=[["grade","品位迹象"],["tenure","土地权属清晰"],["access","交通"],["water","水源"],["security","治安"],["community","社区态度"]];
+const STAGES=[["寻找矿点","考察多个地点，记录土地主、租约和现有采金活动"],["初步取样","淘盘和少量探坑，确认有金、看金粒粗细"],["系统取样","横穿河道布线、挖到基岩，算出体积加权品位"],["试采大样","按正式工艺洗几十到几百方，对比预测与实际，复查尾砂"],["合作与许可","土地主协议、贡金协议、环境许可、外资和签证合规"],["投产","设备进场、月度申报、通过持牌出口商卖金"]];
+
+const XSEC={
+1:["基岩面上的富集带（paystreak）","重金沉到砂砾层最底部，紧贴基岩。这一层往往只有几十厘米厚，却装着大部分的金。<b>取样必须挖到基岩，并把基岩表面刮干净。</b>"+C(57)],
+2:["基岩裂缝","金粒会卡进基岩的裂缝和凹坑。老矿工会把基岩表层也撬开来洗。"+C(1)],
+3:["阶地（古河床）","河流下切后，旧河床被留在半山腰。阶地常被忽略，有时比现代河床更富。"+C(57)],
+4:["埋藏古河道","古河道被后来的沉积物盖住。品位可能不错，但要先剥掉很厚的覆盖层，成本高。"+C(57)],
+5:["表土 / 覆盖层","一般不含金或含量极低。剥离量越大，每立方的成本越高。"],
+6:["现代河床表面","洪水后河床表面看到的'金花'常常误导人：表面富集，下面几厘米可能几乎没有金。"+C(57)]
+};
+
+const LADDER=[
+["淘盘看金花",15,"有没有金、金粒粗细、大致方位","不能估算储量；受操作者影响大"+C(3)+C(1),"几天，成本很低"],
+["系统探坑到基岩",45,"体积加权品位、富集层位置、基岩深度","坑太少时平均值不可信；高值要复采"+C(1)+C(2),"几周，人工为主"],
+["钻孔",55,"较深砂砾的品位与厚度","小口径或无套管钻孔常高估，螺旋钻会分选金粒"+C(1)+C(52),"需要钻机，较贵"],
+["试采大样",85,"按真实工艺能回收多少金","样品少时仍可能不代表全区；更容易被撒金"+C(1),"几十到几百 m³"],
+["生产对账",100,"实际产金 vs 预测","此时设备已经投入"+C(4),"投产后每月"]
+];
+
+const PROC=[
+["土地与许可","与习惯土地主达成协议，取得租约和环境许可；见办证路线。"],
+["剥离表土","推土机或挖掘机清除无金覆盖层，单独堆放以便复垦。剥采比越高，成本越高。"],
+["采挖含金砂砾至基岩","挖掘机挖到基岩，刮净基岩表面。大石块剔除并估算比例。"],
+["擦洗筛分","滚筒筛（trommel）或振动筛加高压水打散泥团、筛掉大石；黏土没打散，里面的金会被直接冲走。先擦洗可提高回收率最多 20%。"+C(5)],
+["重力粗选","溪槽（sluice）为主；跳汰机（jig）、离心选矿机回收细金。"+C(5)],
+["精选","摇床或淘盘把重砂精矿提纯，磁铁去除磁铁矿。"+C(1)],
+["熔炼与出售","熔成合金锭，交持牌收金商或出口商化验、称重、计价；所有销售须经央行持牌渠道。"+C(8)],
+["水处理与复垦","沉淀池澄清后排放或循环；采完的地段回填复垦。"]
+];
+
+const EQUIP=[
+["日处理量","50–150 m³","推断","300–600 m³","推断","1,000–1,500 m³","推断"],
+["挖掘机","1 台 20–22 t（Cat 320 / SANY SY215C / PC200），斗容 0.9–1.14 m³","有来源","1–2 台 20–30 t","推断","2 台 30 t 级","推断"],
+["推土机","不配，剥离时租用","推断","1 台 D6 级或山推 SD22","有来源","1 台 D6–D8","推断"],
+["装载机","不配","推断","1 台 950 级","推断","1 台 966 级 + 1–2 辆自卸车","推断"],
+["洗选设备","10–30 t/h 擦洗筒或滚筒筛 + 溪槽（如 iCON IGR1000、Savona ST30）","有来源","30–60 码³/h 滚筒筛 + 溪槽 + 1–2 台离心机","有来源","约 120 码³/h 滚筒筛 + 多条溪槽（Savona ST120 / Extrac-Tec S-120）","有来源"],
+["用水（按 3–6 m³/m³）","约 20–100 m³/h","推断","约 70–275 m³/h","推断","约 275–550 m³/h","推断"],
+["动力","25 kVA 发电机 + 2–4 寸柴油泵","有来源","约 60 kW 发电机 + 6 寸泵","有来源","约 90–100 kW 发电机 + 8–12 寸泵","有来源"],
+["柴油 / 天","约 130–180 L","推断","约 350–500 L","推断","约 900–1,200 L","推断"],
+["柴油费 / 天（K5.90/L）","约 K770–1,060","推断","约 K2,065–2,950","推断","约 K5,300–7,080","推断"],
+["人员","6–10 人（育空模型 2.5 人）","推断","12–20 人（育空实例 4–6 人）","推断","25–40 人（育空模型 10 人）","推断"],
+["设备投入","约 US$9–22 万","推断","约 US$30–70 万","推断","约 US$90–200 万","推断"]
+];
+
+const ROADMAP=[
+["场地与权属尽调","MRA 租约登记册（Wau 办事处）","查有无他人 EL/AML/ML；识别习惯土地所有人；查人员签证状况","每条登记 K100"+C(10),"待核实",true],
+["土地主组织","土地团体登记处（DLPP）","成立 Incorporated Land Group：章程、成员名单及出生证明、边界草图、6–10 人委员会（含 2 名女性）"+C(66),"待核实","待核实",true],
+["租约","MRA 登记处 → 监督官听证 → 矿业咨询委员会 → 部长","AML（土地所有人，≤5 公顷，河床及 20 m 内，≤5 年）或 ML（公民持股 ≥51%）；表格 8、17 + 开发方案（含取样、储量、矿山计划、现金流）"+C(7)+C(9),"AML K250，年租 ≤K15；ML K2,500–50,000"+C(10),"法定最短约 2–3 个月；实际待核实",true],
+["外资主体","IPA","注册 PNG 公司 + 外资企业证书；承包开采是否属保留行业需律师意见"+C(14),"K400 + K2,000"+C(12),"资料齐全后 5 个工作日"+C(13),true],
+["贡金协议","MRA → 部长批准 → 登记","用 MRA 范本；占地费 ≥K2,000/月（60/40）+ 毛收入分成"+C(8),"待核实","待核实",true],
+["环境许可","CEPA","机械化 ML、无化学处理：年处理 ≤5 万吨 → 二级 A 类；>5 万吨 → 二级 B 类（本站默认的每年 10 万 m³ 属于后者）；化学处理 ≤5 万吨 → 二级 B 类，更多 → 三级。AML 适用级别不明确，需向 CEPA 确认"+C(11),"待核实","二级 A 类 30 天、B 类 90 天（受理后，来源为顾问文章）"+C(68),true],
+["外籍人员","ICA（工作许可 + 就业签证）","开工前必须获批"+C(67)+"；材料一般包括 IPA 证书、保证金、合同、无犯罪记录、体检（二手资料，待核实）","待核实（以美元计）","约 15 个工作日到 6–10 周（低可信度）",true],
+["税务登记","IRC","税号；年营业额超 K250,000 须登记 GST"+C(70),"待核实","待核实",true],
+["卖金与出口","央行持牌出口商","只能卖给持牌出口商或其关联收金商；自办出口牌照需实缴资本 K25,000、保证金 K75,000、每年续期"+C(16),"出口牌照无费用"+C(16),"待核实",true],
+["持续合规","MRA","每月产量与权利金申报；配合 MRA 监管委员会"+C(8),"规费 0.5% + 权利金 2%","每月",true]
+];
+
+const DISTRICTS=[
+["Wau–Bulolo / Edie Creek","Morobe","1922 年发现 Koranga Creek，1926 年发现 Upper Edie Creek，称 PNG 最富砂金矿田；1932 年起 Bulolo 采金船作业",-7.3,146.7],
+["Lakekamu","Gulf / Morobe 交界","1909 年 12 月宣布为金矿区，至 1912 年约 17,500 盎司；痢疾死亡严重",-7.9,146.3],
+["Yodda / Gira","Oro（Northern）","1899 年约 150 名矿工；Yodda 1900/01 年度峰值约 10,000 盎司",-8.6,147.6],
+["Sudest（Tagula）","Milne Bay","1888 年 9–10 月掘金潮，10 月约 200 名欧洲矿工，1889 年 7 月约 300 名",-11.5,153.4],
+["Misima","Milne Bay","1889 年砂金潮；后发现岩金，1989–2004 年 Placer Dome 开矿",-10.7,152.8],
+["Sepik / Maprik","East Sepik","1936/37–1939/40 年度每年超过 6,000 盎司；2025 年 6 月 Atomb 河外籍人员非法采金被捕",-3.63,143.05],
+["Kainantu","Eastern Highlands","1928 年发现金；K92 矿 2018 年投产",-6.29,145.86],
+["Mt Kare","Enga / Southern Highlands","1988–89 年至少 7,000 名淘金者涌入",-5.6,143.0]
+];
+const TOWNS=[["莱城 Lae",-6.730,147.001],["Bulolo",-7.200,146.647],["Wau",-7.339,146.717],["Goroka",-6.083,145.383],["莫尔兹比港 Port Moresby",-9.479,147.149],["Maprik",-3.627,143.051],["Alotau",-10.317,150.433]];
+
+const GLOSS=[
+["品位","Grade","—","每原位立方米含多少克纯金（g/m³）"],
+["原位方 / 松方","Bank m³ / Loose m³","—","未挖动的体积 / 挖出后膨胀的体积"],
+["金花","Colour","—","淘盘里看到的一粒金"],
+["富集带","Paystreak","—","砂砾底部贴近基岩的富金层"],
+["基岩","Bedrock","ston（石头）","砂砾层下面的岩石"],
+["土地主","Landowner","papa graun（组合词）","习惯土地的所有人；papa = 父亲 / 部族守护人 / 所有人"],
+["土地","Land / ground","graun","土地、地面"],
+["河 / 水","River / water","wara","河流、水"],
+["金","Gold","gol",""],
+["洗","Wash","wasim","洗；'wasim gol' 为组合词"],
+["淘盘","Gold pan","dis","盘子、盆"],
+["机器","Machine","masin","机器、发动机"],
+["买 / 付钱","Buy / pay","baim",""],
+["卖 / 运出","Sell / ship","salim","送、卖、运"],
+["钱","Money","mani",""],
+["多少","How much","hamas",""],
+["牌照","Licence","laisens",""],
+["公司","Company","kampani",""],
+["政府","Government","gavman",""],
+["村子","Village","ples",""],
+["雨季","Rainy season","taim bilong ren",""],
+["路","Road","rot",""],
+["砂金开采租约","Alluvial Mining Lease (AML)","—","土地所有人可申请，≤5 公顷，≤5 年"],
+["采矿租约","Mining Lease (ML)","—","砂金类须公民持股 ≥51%"],
+["勘探许可证","Exploration Licence (EL)","—","持有人可对 AML 申请提出异议"],
+["贡金协议","Tribute agreement","—","租约持有人允许承包方开采并分成，须部长批准、MRA 登记"],
+["承包方","Contract miner / Tributer","—","在贡金协议中负责开采、承担成本的一方"],
+["土地团体","Incorporated Land Group (ILG)","—","依法登记的氏族土地团体"],
+["监督官听证","Warden's hearing","—","租约审批中在现场听取土地主意见的程序"],
+["成色","Fineness","—","金中纯金的千分比，如 850"]
+];
+
+const POLICY_SEED=[
+["2026-10-15","立法 / 政策","总理 Marape 在议会支持委员会报告，承诺 2027 年大选前把'砂金只限公民'立法，推动国家黄金精炼厂，打击非法出口",21],
+["2026-10-15","数据 / 报告","议会委员会第一份砂金报告：真实产值约 K6.4bn/年，申报仅 K120–150m；21 项建议，含考虑暂停出口",22],
+["2026-06-10","立法 / 政策","矿业部长 Loifa 重申砂金开采保留给公民；副总理称出口不升反降",56],
+["2026-02-13","市场","PNG 被列入 FATF 灰名单",26],
+["2026-02-03","立法 / 政策","总理下令审查所有矿业协议，含中小型采矿牌照持有人",71],
+["2025-10-29","执法","105 名外籍人员因在 Bulolo 区 Sambio 村非法采金被驱逐",23],
+["2025-10-08","数据 / 报告","委员会将年走私损失估算上调至 K1.3bn",51],
+["2025-10-02","数据 / 报告","委员会称官方砂金产量由约 12 万盎司降至约 4 万盎司（与 MRA 所说 8 万盎司不一致）",50],
+["2025-06-30","执法","8 名中国公民因在 East Sepik 用重型机械非法采金被捕",24],
+["2025-06-05","数据 / 报告","MRA 称申报产量由 12 万降至 8 万盎司，原因不明",25],
+["2025-02-25","立法 / 政策","新《Mining Bill》草案发布征求意见：国家可入股 30%，权利金拟升至 5% 或 10%",72],
+["2019-05-29","立法 / 政策","砂金规费由 0.25% 上调至 0.5%",74]
+];
+
+/* ================= helpers ================= */
+const $=s=>document.querySelector(s);
+const $$=s=>Array.from(document.querySelectorAll(s));
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=(n,d=0)=>Number.isFinite(n)?n.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d}):"—";
+const toast=m=>{const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>t.hidden=true,2400)};
+const today=()=>new Date().toISOString().slice(0,10);
+const COLS=["sites","samples","journal","files","scenarios","tasks","contacts","budget","policy"];
+const state=Object.fromEntries(COLS.map(c=>[c,[]]));
+let db=null,assets=null,sample=null,canWrite=true,canImg=false;
+
+/* ================= routing ================= */
+const VIEWS=["overview","sites","samples","journal","tasks","contacts","budget","files","ask","basics","grade","process","equipment","economics","permits","map","policy","glossary","sources"];
+function route(){const h=location.hash.slice(1);const v=VIEWS.includes(h)?h:"overview";
+  VIEWS.forEach(x=>{$("#v-"+x).hidden=x!==v});
+  $$("#nav a").forEach(a=>{const on=a.dataset.v===v;a.classList.toggle("on",on);if(on)a.scrollIntoView({block:"nearest",inline:"nearest"})});
+  if(v==="map")renderMaps();if(v==="economics"){renderModel();}}
+addEventListener("hashchange",()=>{route();scrollTo(0,0)});
+
+/* ================= generic ================= */
+const siteName=id=>{const s=state.sites.find(x=>x.id===id);return s?s.name:"—"};
+const statusLabel=k=>(STATUSES.find(s=>s[0]===k)||STATUSES[0])[1];
+function fillSelect(el,opts,blank){el.innerHTML=(blank?`<option value="">${blank}</option>`:"")+opts.map(o=>Array.isArray(o)?`<option value="${esc(o[0])}">${esc(o[1])}</option>`:`<option>${esc(o)}</option>`).join("")}
+function siteOptions(){const o=state.sites.map(s=>[s.id,s.name]);
+  [["#m-site","选择矿点"],["#j-site","不关联"],["#f-site","不关联"],["#t-site","不关联"],["#c-site","不关联"],["#b-site","不关联"],["#ocr-site","识别结果归入哪个矿点"]].forEach(([s,b])=>{const el=$(s);const v=el.value;fillSelect(el,o,b);el.value=v})}
+function thumbs(ids){if(!ids||!ids.length)return"";return '<div class="thumbs">'+ids.map(p=>{const id=typeof p==="string"?p:p.id;const pdf=typeof p==="object"&&/pdf/.test(p.type||"");return `<a href="/_blob/${esc(id)}" target="_blank" rel="noopener">${pdf?'<span class="doc">PDF</span>':`<img src="/_blob/${esc(id)}" alt="附件" loading="lazy">`}</a>`}).join("")+"</div>"}
+async function uploadAll(input,msgEl){const out=[];if(!input||!input.files||!input.files.length)return out;if(!assets){msgEl.textContent="当前没有上传权限，附件未保存。";return out}
+  for(const f of input.files){msgEl.textContent=`正在上传 ${f.name}…`;try{const r=await assets.upload(f);out.push({id:r.id,type:r.contentType,name:f.name})}catch(e){msgEl.textContent=`${f.name} 上传失败：${e.code==="too_large"?"超过 20 MB":e.code==="unsupported_type"?"文件类型不支持":"请稍后重试"}`}}
+  if(out.length)msgEl.textContent="";return out}
+async function write(fn,msgEl){if(!db){toast("数据未连接，无法保存");return false}try{await fn();return true}catch(e){const m=e&&e.code==="invalid_argument"?"你没有编辑权限":e&&e.code==="quota_exceeded"?"存储已满":"保存失败，请重试";if(msgEl)msgEl.textContent=m;else toast(m);if(e&&e.code==="invalid_argument"){canWrite=false;applyPerms()}return false}}
+function applyPerms(){$$("[data-w]").forEach(b=>b.disabled=!canWrite||!db);$$("[data-up]").forEach(e=>e.hidden=!assets);$$("[data-ai]").forEach(e=>e.hidden=!(sample&&canImg))}
+function armDelete(btn,fn){if(btn.dataset.armed){fn()}else{btn.dataset.armed="1";btn.textContent="确认删除";setTimeout(()=>{if(btn.isConnected){delete btn.dataset.armed;btn.textContent="删除"}},4000)}}
+function toggleForm(wrap,show){$(wrap).hidden=!show}
+
+/* ================= SITES ================= */
+fillSelect($("#s-province"),PROVINCES);fillSelect($("#s-status"),STATUSES);fillSelect($("#s-tenure"),TENURE);
+$("#s-scores").innerHTML=SCORE_KEYS.map(([k,l])=>`<label class="fld" style="min-width:104px">${l}<select id="sc-${k}"><option value="">—</option>${[1,2,3,4,5].map(n=>`<option>${n}</option>`).join("")}</select></label>`).join("");
+let editingSite=null;
+function openSite(s){editingSite=s?s.id:null;toggleForm("#site-form-wrap",true);$("#site-msg").textContent="";
+  const set=(id,v)=>{$(id).value=v==null?"":v};
+  set("#s-name",s?.name);$("#s-province").value=s?.province||PROVINCES[0];set("#s-area",s?.area);set("#s-gps",s?.gps);$("#s-status").value=s?.status||"candidate";set("#s-date",s?.date);
+  set("#s-landowner",s?.landowner);$("#s-tenure").value=s?.tenure||TENURE[0];set("#s-el",s?.el);set("#s-access",s?.access);set("#s-water",s?.water);set("#s-activity",s?.activity);set("#s-notes",s?.notes);$("#s-photos").value="";
+  SCORE_KEYS.forEach(([k])=>$("#sc-"+k).value=s?.scores?.[k]||"");$("#s-name").focus()}
+$("#site-new").onclick=()=>openSite(null);$("#site-cancel").onclick=()=>toggleForm("#site-form-wrap",false);
+$("#site-form").onsubmit=async e=>{e.preventDefault();const msg=$("#site-msg");const prev=state.sites.find(x=>x.id===editingSite);
+  const ups=await uploadAll($("#s-photos"),msg);const scores={};SCORE_KEYS.forEach(([k])=>{const v=$("#sc-"+k).value;if(v)scores[k]=+v});
+  const g=k=>$(k).value.trim();
+  const body={name:g("#s-name"),province:$("#s-province").value,area:g("#s-area"),gps:g("#s-gps"),status:$("#s-status").value,date:$("#s-date").value,landowner:g("#s-landowner"),tenure:$("#s-tenure").value,el:$("#s-el").value,access:g("#s-access"),water:g("#s-water"),activity:g("#s-activity"),notes:g("#s-notes"),scores,photos:[...(prev?.photos||[]),...ups],createdAt:prev?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+  if(await write(()=>editingSite?db.doc("sites/"+editingSite).set(body):db.collection("sites").add(body),msg)){toggleForm("#site-form-wrap",false);toast("矿点已保存")}};
+const scoreBar=n=>`<span class="score">${[1,2,3,4,5].map(i=>`<i class="${i<=n?"on":""}"></i>`).join("")}</span>`;
+function siteStats(id){const arr=state.samples.filter(x=>x.siteId===id);let V=0,G=0,F=0,FV=0,sys=0;
+  arr.forEach(s=>{const v=bankVol(s),g=(sampleGold(s)||0)/1000;if(v>0){V+=v;G+=g;if(s.fine>0){F+=g*s.fine/100;FV+=v}}if(!/Pan/.test(s.method||""))sys++});
+  return {n:arr.length,V,raw:V>0?G/V:NaN,fine:FV>0?F/FV:NaN,sys}}
+function renderSites(){const el=$("#site-list");
+  if(!state.sites.length){el.innerHTML=`<div class="empty">还没有矿点。技术人员考察过的每个地点，点"新增矿点"建一条，先填名称、位置和土地主就够了。</div>`;return}
+  const order=Object.fromEntries(STATUSES.map((s,i)=>[s[0],i]));
+  el.innerHTML=state.sites.slice().sort((a,b)=>(order[a.status]??0)-(order[b.status]??0)||(b.updatedAt||"").localeCompare(a.updatedAt||"")).map(s=>{const st=siteStats(s.id);
+    return `<div class="panel">
+      <div class="row"><h3>${esc(s.name)}</h3><span class="pill s-${esc(s.status)}">${statusLabel(s.status)}</span><span class="spacer"></span>
+        <button class="ghost" data-edit="${s.id}" ${canWrite?"":"disabled"}>编辑</button><button class="ghost danger" data-del="${s.id}" ${canWrite?"":"disabled"}>删除</button></div>
+      <div class="small muted">${esc(s.province||"")}${s.area?" · "+esc(s.area):""}${s.gps?` · <span class="mono">${esc(s.gps)}</span>`:""}${s.date?" · 首次考察 "+esc(s.date):""}</div>
+      <div class="row small"><span>土地主：${esc(s.landowner||"未填")}</span><span>租约：${esc(s.tenure||"不清楚")}</span><span>EL 覆盖：${esc(s.el||"不清楚")}</span>${s.access?`<span>交通：${esc(s.access)}</span>`:""}${s.water?`<span>水源：${esc(s.water)}</span>`:""}${s.activity?`<span>现有活动：${esc(s.activity)}</span>`:""}</div>
+      <div class="row small"><span>样品 <b class="mono">${st.n}</b>（系统取样 ${st.sys}）</span><span>加权毛金品位 <b class="mono">${fmt(st.raw,3)}</b> g/m³</span>${Number.isFinite(st.fine)?`<span>纯金品位 <b class="mono">${fmt(st.fine,3)}</b></span>`:""}
+        ${SCORE_KEYS.filter(([k])=>s.scores?.[k]).map(([k,l])=>`<span class="muted">${l} ${scoreBar(s.scores[k])}</span>`).join("")}</div>
+      ${s.notes?`<div class="small" style="white-space:pre-wrap">${esc(s.notes)}</div>`:""}${thumbs(s.photos)}
+    </div>`}).join("")}
+$("#site-list").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.edit)openSite(state.sites.find(x=>x.id===b.dataset.edit));
+  if(b.dataset.del)armDelete(b,async()=>{if(await write(()=>db.doc("sites/"+b.dataset.del).delete()))toast("已删除（样品记录保留）")})};
+const W={grade:5,tenure:4,access:2,water:2,security:3,community:3};
+$("#cmp-weights").innerHTML=SCORE_KEYS.map(([k,l])=>`<label class="fld" style="min-width:100px">${l}<input type="number" min="0" max="5" step="1" id="w-${k}" value="${W[k]}"></label>`).join("");
+SCORE_KEYS.forEach(([k])=>$("#w-"+k).addEventListener("input",renderCompare));
+function renderCompare(){const t=$("#cmp-table");const act=state.sites.filter(s=>s.status!=="dropped");
+  if(!act.length){t.innerHTML=`<tr><td class="muted small">建矿点并打分后，这里按权重给出排名。</td></tr>`;return}
+  const w=Object.fromEntries(SCORE_KEYS.map(([k])=>[k,+$("#w-"+k).value||0]));
+  const rows=act.map(s=>{let sw=0,ss=0;SCORE_KEYS.forEach(([k])=>{const v=s.scores?.[k];if(v&&w[k]){sw+=w[k];ss+=w[k]*v}});return {s,score:sw?ss/sw:NaN,st:siteStats(s.id),miss:SCORE_KEYS.filter(([k])=>w[k]&&!s.scores?.[k]).length}}).sort((a,b)=>(isNaN(b.score)?-1:b.score)-(isNaN(a.score)?-1:a.score));
+  t.innerHTML=`<tr><th>排名</th><th>矿点</th><th class="n">加权得分</th>${SCORE_KEYS.map(([,l])=>`<th class="n">${l}</th>`).join("")}<th class="n">品位 g/m³</th><th class="n">样品</th><th>租约</th></tr>`+rows.map((r,i)=>`<tr><td class="mono">${i+1}</td><td>${esc(r.s.name)}${r.miss?` <span class="pill warn">缺 ${r.miss} 项评分</span>`:""}</td><td class="n"><b>${fmt(r.score,2)}</b></td>${SCORE_KEYS.map(([k])=>`<td class="n">${r.s.scores?.[k]||"—"}</td>`).join("")}<td class="n">${fmt(r.st.raw,3)}</td><td class="n">${r.st.n}</td><td class="small">${esc(r.s.tenure||"")}</td></tr>`).join("")}
+
+/* ================= SAMPLES ================= */
+function bankVol(s){if(s.bankV>0)return +s.bankV;
+  if(s.vmode==="pit")return (+s.l||0)*(+s.w||0)*(+s.d||0)||NaN;
+  if(s.vmode==="pans")return s.pans>0&&s.pf>0?s.pans/s.pf:NaN;
+  if(s.vmode==="loose"){const m=s.lunit==="m3"?+s.loose:s.lunit==="bucket"?s.loose*0.02:s.loose/1000;return m>0?m/(1+(+s.swell||0)/100):NaN}
+  // legacy v1 records: vol+unit (treated as loose without swell)
+  if(s.vol>0){const m=s.unit==="m3"?+s.vol:s.unit==="bucket"?s.vol*0.02:s.vol/1000;return m}
+  return NaN}
+function sampleGold(s){return s.gold==null?NaN:(s.gunit==="g"?+s.gold*1000:+s.gold)}
+function gradeOf(s){const v=bankVol(s),mg=sampleGold(s);return v>0?mg/1000/v:NaN}
+function readSampleForm(){const n=id=>{const v=$(id).value;return v===""?null:+v};
+  const vmode=$("#m-vmode").value;const o={siteId:$("#m-site").value,date:$("#m-date").value,label:$("#m-label").value.trim(),method:$("#m-method").value,from:n("#m-from"),to:n("#m-to"),bedrock:$("#m-bedrock").value,vmode,
+    gold:n("#m-gold"),gunit:"mg",fine:n("#m-fine"),colours:n("#m-colours"),largest:$("#m-largest").value.trim(),oversize:n("#m-oversize"),who:$("#m-who").value.trim(),notes:$("#m-notes").value.trim()};
+  if(vmode==="pit"){o.l=n("#m-l");o.w=n("#m-w");o.d=n("#m-d")}
+  if(vmode==="pans"){o.pans=n("#m-pans");o.pf=n("#m-pf")}
+  if(vmode==="loose"){o.loose=n("#m-loose");o.lunit=$("#m-lunit").value;o.swell=n("#m-swell")}
+  if(vmode==="bank"){o.bankV=n("#m-bankv")}
+  return o}
+function previewSample(){const s=readSampleForm();const v=bankVol(s),g=gradeOf(s);
+  let t=`原位体积 <b class="mono">${fmt(v,3)}</b> m³ · 毛金品位 <b class="mono">${fmt(g,3)}</b> g/m³（${fmt(g*1000,0)} mg/m³）`;
+  if(s.fine>0&&Number.isFinite(g))t+=` · 纯金品位 <b class="mono">${fmt(g*s.fine/100,3)}</b> g/m³`;
+  if(s.oversize>0)t+=`<br><span class="xs">已剔除大石 ${s.oversize}%：若体积只计算了细料，按 Wells 方法校正后品位约为 <b class="mono">${fmt(g*(1-s.oversize/100),3)}</b> g/m³。两个数都应保留。${C(1)}</span>`;
+  if(/Pan/.test(s.method))t+=`<br><span class="xs">淘盘结果只作参考，不能估算储量。</span>`;
+  $("#m-preview").innerHTML=t}
+$("#m-vmode").addEventListener("change",()=>{const m=$("#m-vmode").value;$$("[data-vm]").forEach(e=>e.hidden=e.dataset.vm!==m);previewSample()});
+$("#smp-form").addEventListener("input",previewSample);
+$("#smp-new").onclick=()=>{toggleForm("#smp-form-wrap",true);$("#smp-msg").textContent="";if(!$("#m-date").value)$("#m-date").value=today();$("#m-site").focus()};
+$("#smp-cancel").onclick=()=>toggleForm("#smp-form-wrap",false);
+$("#smp-form").onsubmit=async e=>{e.preventDefault();const msg=$("#smp-msg");const s=readSampleForm();
+  if(!(bankVol(s)>0)){msg.textContent="请填写完整的体积数据";return}
+  const ups=await uploadAll($("#m-photos"),msg);s.photos=ups;s.createdAt=new Date().toISOString();
+  if(await write(()=>db.collection("samples").add(s),msg)){const keep={site:$("#m-site").value,date:$("#m-date").value,mode:$("#m-vmode").value,pf:$("#m-pf").value,swell:$("#m-swell").value};
+    $("#smp-form").reset();$("#m-site").value=keep.site;$("#m-date").value=keep.date;$("#m-vmode").value=keep.mode;$("#m-pf").value=keep.pf;$("#m-swell").value=keep.swell;$$("[data-vm]").forEach(e=>e.hidden=e.dataset.vm!==keep.mode);previewSample();toast("取样已保存，可以继续录下一条")}};
+const volDesc=s=>s.vmode==="pit"?`坑 ${fmt(s.l,2)}×${fmt(s.w,2)}×${fmt(s.d,2)} m`:s.vmode==="pans"?`${s.pans} 盘 ÷ ${s.pf}`:s.vmode==="loose"?`松方 ${s.loose} ${s.lunit==="bucket"?"桶":s.lunit} ÷ (1+${s.swell||0}%)`:s.vmode==="bank"?"原位直填":(s.vol?`${s.vol} ${s.unit}（旧格式）`:"");
+function renderSamples(){const t=$("#smp-table"),sum=$("#smp-sum");
+  if(!state.samples.length){t.innerHTML=`<tr><td class="empty">还没有样品。先建矿点，再点"新增取样"；手写记录可用"从手写记录照片识别"。</td></tr>`;sum.innerHTML=`<tr><td class="muted small">录入样品后，这里按矿点汇总。</td></tr>`;return}
+  const rows=state.samples.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.createdAt||"").localeCompare(a.createdAt||""));
+  t.innerHTML=`<tr><th>日期</th><th>矿点</th><th>编号</th><th>方法</th><th>深度 m</th><th>基岩</th><th>体积来源</th><th class="n">原位 m³</th><th class="n">毛金 mg</th><th class="n">品位 g/m³</th><th class="n">成色</th><th>附件</th><th></th></tr>`+rows.map(s=>{const g=gradeOf(s);
+    return `<tr><td class="mono">${esc(s.date||"")}</td><td>${esc(siteName(s.siteId))}</td><td>${esc(s.label||"")}</td><td>${esc(s.method||"")}</td><td class="mono">${s.from!=null||s.to!=null?`${s.from??"?"}–${s.to??"?"}`:(s.depth!=null?s.depth:"—")}</td><td>${esc(s.bedrock||"—")}</td><td class="xs">${esc(volDesc(s))}</td><td class="n">${fmt(bankVol(s),3)}</td><td class="n">${fmt(sampleGold(s),1)}</td><td class="n"><b>${fmt(g,3)}</b></td><td class="n">${s.fine?s.fine+"%":"—"}</td><td>${thumbs(s.photos)}</td><td><button class="ghost danger" data-sdel="${s.id}" ${canWrite?"":"disabled"}>删除</button></td></tr>${s.notes||s.largest||s.who?`<tr><td></td><td colspan="12" class="xs muted">${s.largest?"最大金粒："+esc(s.largest)+"　":""}${s.who?"取样人："+esc(s.who)+"　":""}${esc(s.notes||"")}</td></tr>`:""}`}).join("");
+  const by={};state.samples.forEach(s=>{(by[s.siteId]=by[s.siteId]||[]).push(s)});
+  sum.innerHTML=`<tr><th>矿点</th><th class="n">样品</th><th class="n">系统取样</th><th class="n">到基岩</th><th class="n">总原位 m³</th><th class="n">加权毛金品位</th><th class="n">纯金品位</th><th class="n">最高单样</th></tr>`+Object.keys(by).map(id=>{const st=siteStats(id);const mx=Math.max(...by[id].map(gradeOf).filter(Number.isFinite));
+    return `<tr><td>${esc(siteName(id))}</td><td class="n">${st.n}</td><td class="n">${st.sys}</td><td class="n">${by[id].filter(s=>s.bedrock==="是").length}</td><td class="n">${fmt(st.V,3)}</td><td class="n"><b>${fmt(st.raw,3)}</b></td><td class="n">${fmt(st.fine,3)}</td><td class="n">${Number.isFinite(mx)?fmt(mx,3):"—"}</td></tr>`}).join("")}
+$("#smp-table").onclick=e=>{const b=e.target.closest("[data-sdel]");if(b)armDelete(b,async()=>{if(await write(()=>db.doc("samples/"+b.dataset.sdel).delete()))toast("已删除")})};
+
+/* OCR from handwritten notes */
+let ocrRows=[];
+$("#ocr-open").onclick=()=>{toggleForm("#ocr-wrap",true)};$("#ocr-close").onclick=()=>toggleForm("#ocr-wrap",false);
+$("#ocr-run").onclick=async()=>{const files=$("#ocr-file").files,msg=$("#ocr-msg");if(!files.length){msg.textContent="先选照片";return}if(!sample){msg.textContent="当前无法调用 Claude";return}
+  $("#ocr-run").disabled=true;msg.textContent="正在识别（可能需要半分钟到一分钟）…";
+  const prompt=`这些照片是巴布亚新几内亚砂金矿现场的手写取样记录（可能是中文或英文）。请逐行提取样品记录。
+只返回一个 JSON 数组，每个元素格式：{"date":"YYYY-MM-DD 或空","label":"样品编号或空","method":"淘盘 Pan / 探坑 Test pit / 槽样 Channel / 溪槽 Sluice / 钻孔 Drill / 试采大样 Bulk sample 之一，看不出填 淘盘 Pan","depth_from":数字或null,"depth_to":数字或null,"pans":淘盘数或null,"loose_litres":松方升数或null,"buckets":桶数或null,"pit_l":坑长米或null,"pit_w":坑宽米或null,"pit_d":坑深米或null,"gold_mg":毛金毫克数或null,"colours":金花数或null,"bedrock":"是/否/空","notes":"其余文字，含看不清的地方","uncertain":true或false}
+规则：看不清的数字填 null 并在 notes 说明，不要猜；克(g)要换算成毫克(mg)；不是样品记录的内容放进 notes 或忽略。没有任何样品记录就返回 []。`;
+  try{const r=await sample.json(prompt,{images:Array.from(files).slice(0,4),cache:false});
+    ocrRows=Array.isArray(r)?r:[];renderOcr();msg.textContent=ocrRows.length?`识别出 ${ocrRows.length} 行，请逐行核对后勾选保存`:"没有识别出样品记录"}
+  catch(e){msg.textContent=e.code==="not_granted"?"你没有允许本页使用 Claude":e.code==="image_rejected"?"照片无法读取，请换一张（JPG/PNG）":e.code==="rate_limited"?"调用太频繁，请稍后再试":"识别失败，请重试"}
+  finally{$("#ocr-run").disabled=false}};
+function ocrToSample(r){const s={date:r.date||today(),label:r.label||"",method:r.method||"淘盘 Pan",from:r.depth_from??null,to:r.depth_to??null,bedrock:r.bedrock||"",gold:r.gold_mg??null,gunit:"mg",colours:r.colours??null,notes:(r.notes||"")+"（照片识别，已人工核对）"};
+  if(r.pit_l&&r.pit_w&&r.pit_d){s.vmode="pit";s.l=r.pit_l;s.w=r.pit_w;s.d=r.pit_d}
+  else if(r.pans){s.vmode="pans";s.pans=r.pans;s.pf=+$("#m-pf").value||235}
+  else if(r.loose_litres||r.buckets){s.vmode="loose";s.loose=r.loose_litres||r.buckets;s.lunit=r.loose_litres?"L":"bucket";s.swell=+$("#m-swell").value||25}
+  return s}
+function renderOcr(){const o=$("#ocr-out");if(!ocrRows.length){o.innerHTML="";return}
+  o.innerHTML=`<table><tr><th>保存</th><th>日期</th><th>编号</th><th>方法</th><th>体积</th><th class="n">毛金 mg</th><th class="n">品位</th><th>备注</th></tr>${ocrRows.map((r,i)=>{const s=ocrToSample(r);const g=gradeOf(s);
+    return `<tr><td><input type="checkbox" data-oi="${i}" ${r.uncertain||!(g>=0)?"":"checked"} style="width:auto"></td><td>${esc(s.date)}</td><td>${esc(s.label)}</td><td>${esc(s.method)}</td><td class="xs">${esc(volDesc(s)||"缺体积")}</td><td class="n">${fmt(s.gold,1)}</td><td class="n">${fmt(g,3)}</td><td class="xs">${r.uncertain?'<span class="pill warn">有不确定</span> ':""}${esc(r.notes||"")}</td></tr>`}).join("")}</table>
+  <div class="row" style="margin-top:8px"><button class="primary" id="ocr-save" data-w>保存勾选的行</button><span class="xs muted">缺体积或金重的行不会保存；默认不勾选标记"有不确定"的行。</span></div>`;
+  $("#ocr-save").onclick=async()=>{const site=$("#ocr-site").value,msg=$("#ocr-msg");if(!site){msg.textContent="先选择矿点";return}
+    let n=0;for(const cb of $$("[data-oi]")){if(!cb.checked)continue;const s=ocrToSample(ocrRows[+cb.dataset.oi]);if(!(bankVol(s)>0)||s.gold==null)continue;s.siteId=site;s.createdAt=new Date().toISOString();s.photos=[];if(await write(()=>db.collection("samples").add(s),msg))n++}
+    msg.textContent=`已保存 ${n} 行`;if(n){ocrRows=[];renderOcr()}};applyPerms()}
+
+/* ================= JOURNAL ================= */
+$("#jr-new").onclick=()=>{toggleForm("#jr-form-wrap",true);$("#jr-msg").textContent="";$("#j-date").value=today();$("#j-title").focus()};
+$("#jr-cancel").onclick=()=>toggleForm("#jr-form-wrap",false);
+$("#jr-form").onsubmit=async e=>{e.preventDefault();const msg=$("#jr-msg");const ups=await uploadAll($("#j-photos"),msg);
+  const body={date:$("#j-date").value,siteId:$("#j-site").value,title:$("#j-title").value.trim(),body:$("#j-body").value.trim(),photos:ups,createdAt:new Date().toISOString()};
+  if(await write(()=>db.collection("journal").add(body),msg)){$("#jr-form").reset();toggleForm("#jr-form-wrap",false);toast("日志已保存")}};
+function jrHtml(j,full){return `<div class="entry"><div class="row"><span class="mono small muted">${esc(j.date||"")}</span><b>${esc(j.title||"")}</b>${j.siteId?`<span class="pill">${esc(siteName(j.siteId))}</span>`:""}<span class="spacer"></span>${full?`<button class="ghost danger" data-jdel="${j.id}" ${canWrite?"":"disabled"}>删除</button>`:""}</div>${j.body?`<div class="small" style="white-space:pre-wrap">${esc(full?j.body:j.body.slice(0,120)+(j.body.length>120?"…":""))}</div>`:""}${thumbs(j.photos)}</div>`}
+function renderJournal(){const rows=state.journal.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.createdAt||"").localeCompare(a.createdAt||""));
+  $("#jr-list").innerHTML=rows.length?rows.map(j=>jrHtml(j,true)).join(""):`<div class="empty">还没有日志。每次考察回来记一条，手写记录拍照附上。</div>`;
+  $("#ov-journal").innerHTML=rows.length?rows.slice(0,3).map(j=>jrHtml(j,false)).join(""):`<div class="empty">还没有日志。</div>`}
+$("#jr-list").onclick=e=>{const b=e.target.closest("[data-jdel]");if(b)armDelete(b,async()=>{if(await write(()=>db.doc("journal/"+b.dataset.jdel).delete()))toast("已删除")})};
+
+/* ================= TASKS ================= */
+fillSelect($("#t-stage"),STAGES.map(s=>s[0]));
+let editingTask=null;
+$("#tk-new").onclick=()=>{editingTask=null;$("#tk-form").reset();toggleForm("#tk-form-wrap",true);$("#t-title").focus()};
+$("#tk-cancel").onclick=()=>toggleForm("#tk-form-wrap",false);
+$("#tk-form").onsubmit=async e=>{e.preventDefault();const msg=$("#tk-msg");const prev=state.tasks.find(x=>x.id===editingTask);
+  const body={title:$("#t-title").value.trim(),owner:$("#t-owner").value.trim(),due:$("#t-due").value,status:$("#t-status").value,stage:$("#t-stage").value,siteId:$("#t-site").value,notes:$("#t-notes").value.trim(),createdAt:prev?.createdAt||new Date().toISOString()};
+  if(await write(()=>editingTask?db.doc("tasks/"+editingTask).set(body):db.collection("tasks").add(body),msg)){toggleForm("#tk-form-wrap",false);toast("任务已保存")}};
+const TS={"待办":"","进行中":"riv","受阻":"bad","完成":"ok"};
+function renderTasks(){const t=$("#tk-table");const order={"受阻":0,"进行中":1,"待办":2,"完成":3};
+  const rows=state.tasks.slice().sort((a,b)=>(order[a.status]??2)-(order[b.status]??2)||(a.due||"9").localeCompare(b.due||"9"));
+  t.innerHTML=rows.length?`<tr><th>状态</th><th>任务</th><th>负责人</th><th>截止</th><th>阶段</th><th>矿点</th><th></th></tr>`+rows.map(k=>{const late=k.due&&k.status!=="完成"&&k.due<today();
+    return `<tr><td><select data-tst="${k.id}" ${canWrite?"":"disabled"} style="width:auto">${["待办","进行中","受阻","完成"].map(s=>`<option ${s===k.status?"selected":""}>${s}</option>`).join("")}</select></td><td>${esc(k.title)}${k.notes?`<div class="xs muted">${esc(k.notes)}</div>`:""}</td><td>${esc(k.owner||"")}</td><td class="mono ${late?"":""}" style="${late?"color:var(--bad)":""}">${esc(k.due||"")}${late?" 逾期":""}</td><td class="small">${esc(k.stage||"")}</td><td class="small">${k.siteId?esc(siteName(k.siteId)):""}</td><td><button class="ghost" data-tedit="${k.id}">编辑</button><button class="ghost danger" data-tdel="${k.id}" ${canWrite?"":"disabled"}>删除</button></td></tr>`}).join(""):`<tr><td class="empty">还没有任务。</td></tr>`;
+  const open=rows.filter(k=>k.status!=="完成").slice(0,5);
+  $("#ov-tasks").innerHTML=open.length?`<ul class="tight small">${open.map(k=>`<li><span class="pill ${TS[k.status]||""}">${esc(k.status)}</span> ${esc(k.title)}${k.owner?` · ${esc(k.owner)}`:""}${k.due?` · <span class="mono">${esc(k.due)}</span>`:""}</li>`).join("")}</ul>`:`<div class="empty">没有未完成任务。</div>`}
+$("#tk-table").addEventListener("change",async e=>{const s=e.target.closest("[data-tst]");if(!s)return;const k=state.tasks.find(x=>x.id===s.dataset.tst);if(k)await write(()=>db.doc("tasks/"+k.id).update({status:s.value}))});
+$("#tk-table").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.tedit){const k=state.tasks.find(x=>x.id===b.dataset.tedit);editingTask=k.id;toggleForm("#tk-form-wrap",true);$("#t-title").value=k.title||"";$("#t-owner").value=k.owner||"";$("#t-due").value=k.due||"";$("#t-status").value=k.status||"待办";$("#t-stage").value=k.stage||STAGES[0][0];$("#t-site").value=k.siteId||"";$("#t-notes").value=k.notes||""}
+  if(b.dataset.tdel)armDelete(b,async()=>{if(await write(()=>db.doc("tasks/"+b.dataset.tdel).delete()))toast("已删除")})};
+
+/* ================= CONTACTS ================= */
+let editingC=null;
+$("#ct-new").onclick=()=>{editingC=null;$("#ct-form").reset();toggleForm("#ct-form-wrap",true);$("#c-name").focus()};
+$("#ct-cancel").onclick=()=>toggleForm("#ct-form-wrap",false);
+$("#ct-form").onsubmit=async e=>{e.preventDefault();const msg=$("#ct-msg");const prev=state.contacts.find(x=>x.id===editingC);
+  const body={name:$("#c-name").value.trim(),role:$("#c-role").value,org:$("#c-org").value.trim(),phone:$("#c-phone").value.trim(),siteId:$("#c-site").value,notes:$("#c-notes").value.trim(),createdAt:prev?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+  if(await write(()=>editingC?db.doc("contacts/"+editingC).set(body):db.collection("contacts").add(body),msg)){toggleForm("#ct-form-wrap",false);toast("已保存")}};
+function renderContacts(){const t=$("#ct-table");const rows=state.contacts.slice().sort((a,b)=>(a.role||"").localeCompare(b.role||"")||(a.name||"").localeCompare(b.name||""));
+  t.innerHTML=rows.length?`<tr><th>姓名</th><th>角色</th><th>机构 / 氏族</th><th>联系方式</th><th>矿点</th><th>备注</th><th></th></tr>`+rows.map(c=>`<tr><td><b>${esc(c.name)}</b></td><td><span class="pill">${esc(c.role)}</span></td><td>${esc(c.org||"")}</td><td class="mono small" style="user-select:all">${esc(c.phone||"")}</td><td class="small">${c.siteId?esc(siteName(c.siteId)):""}</td><td class="small" style="white-space:pre-wrap;max-width:320px">${esc(c.notes||"")}</td><td><button class="ghost" data-cedit="${c.id}">编辑</button><button class="ghost danger" data-cdel="${c.id}" ${canWrite?"":"disabled"}>删除</button></td></tr>`).join(""):`<tr><td class="empty">还没有联系人。</td></tr>`}
+$("#ct-table").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.cedit){const c=state.contacts.find(x=>x.id===b.dataset.cedit);editingC=c.id;toggleForm("#ct-form-wrap",true);$("#c-name").value=c.name||"";$("#c-role").value=c.role||"其他";$("#c-org").value=c.org||"";$("#c-phone").value=c.phone||"";$("#c-site").value=c.siteId||"";$("#c-notes").value=c.notes||""}
+  if(b.dataset.cdel)armDelete(b,async()=>{if(await write(()=>db.doc("contacts/"+b.dataset.cdel).delete()))toast("已删除")})};
+
+/* ================= BUDGET ================= */
+$("#bg-new").onclick=()=>{$("#bg-form").reset();$("#b-date").value=today();toggleForm("#bg-form-wrap",true)};
+$("#bg-cancel").onclick=()=>toggleForm("#bg-form-wrap",false);
+$("#bg-form").onsubmit=async e=>{e.preventDefault();const msg=$("#bg-msg");
+  const body={date:$("#b-date").value,type:$("#b-type").value,cat:$("#b-cat").value,amt:+$("#b-amt").value,cur:$("#b-cur").value,siteId:$("#b-site").value,note:$("#b-note").value.trim(),createdAt:new Date().toISOString()};
+  if(await write(()=>db.collection("budget").add(body),msg)){toggleForm("#bg-form-wrap",false);toast("已记录")}};
+function renderBudget(){const rows=state.budget.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  $("#bg-table").innerHTML=rows.length?`<tr><th>日期</th><th>类型</th><th>类别</th><th class="n">金额</th><th>币种</th><th>矿点</th><th>说明</th><th></th></tr>`+rows.map(b=>`<tr><td class="mono">${esc(b.date||"")}</td><td><span class="pill ${b.type==="计划预算"?"riv":""}">${esc(b.type)}</span></td><td>${esc(b.cat)}</td><td class="n">${fmt(b.amt,2)}</td><td>${esc(b.cur)}</td><td class="small">${b.siteId?esc(siteName(b.siteId)):""}</td><td class="small">${esc(b.note||"")}</td><td><button class="ghost danger" data-bdel="${b.id}" ${canWrite?"":"disabled"}>删除</button></td></tr>`).join(""):`<tr><td class="empty">还没有记录。差旅、取样化验、给土地主的费用都可以记。</td></tr>`;
+  const curs=[...new Set(rows.map(r=>r.cur))];const cats=[...new Set(rows.map(r=>r.cat))];
+  $("#bg-sum").innerHTML=rows.length?`<tr><th>类别</th>${curs.map(c=>`<th class="n">${c} 实际</th><th class="n">${c} 计划</th>`).join("")}</tr>`+[...cats,"合计"].map(cat=>`<tr><td>${cat==="合计"?"<b>合计</b>":esc(cat)}</td>${curs.map(c=>{const f=t=>rows.filter(r=>r.cur===c&&r.type===t&&(cat==="合计"||r.cat===cat)).reduce((a,r)=>a+(+r.amt||0),0);return `<td class="n">${fmt(f("实际支出"),0)}</td><td class="n muted">${fmt(f("计划预算"),0)}</td>`}).join("")}</tr>`).join(""):`<tr><td class="muted small">记账后显示汇总。</td></tr>`}
+$("#bg-table").onclick=e=>{const b=e.target.closest("[data-bdel]");if(b)armDelete(b,async()=>{if(await write(()=>db.doc("budget/"+b.dataset.bdel).delete()))toast("已删除")})};
+
+/* ================= FILES ================= */
+$("#fl-form").onsubmit=async e=>{e.preventDefault();const msg=$("#fl-msg");const ups=await uploadAll($("#f-file"),msg);if(!ups.length)return;let ok=true;
+  for(const u of ups){ok=await write(()=>db.collection("files").add({name:u.name,assetId:u.id,type:u.type,category:$("#f-cat").value,siteId:$("#f-site").value,createdAt:new Date().toISOString()}),msg)&&ok}
+  if(ok){$("#fl-form").reset();toast("已上传")}};
+function renderFiles(){const t=$("#fl-table");if(!state.files.length){t.innerHTML=`<tr><td class="empty">还没有文件。</td></tr>`;return}
+  t.innerHTML=`<tr><th>文件</th><th>类别</th><th>矿点</th><th>上传日期</th><th></th></tr>`+state.files.slice().sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||"")).map(f=>`<tr><td><a href="/_blob/${esc(f.assetId)}" target="_blank" rel="noopener">${esc(f.name)}</a></td><td>${esc(f.category)}</td><td>${f.siteId?esc(siteName(f.siteId)):"—"}</td><td class="mono">${esc((f.createdAt||"").slice(0,10))}</td><td><button class="ghost danger" data-fdel="${f.id}" ${canWrite?"":"disabled"}>删除</button></td></tr>`).join("")}
+$("#fl-table").onclick=e=>{const b=e.target.closest("[data-fdel]");if(b)armDelete(b,async()=>{if(await write(()=>db.doc("files/"+b.dataset.fdel).delete()))toast("已从列表移除")})};
+
+/* ================= OVERVIEW ================= */
+function currentStage(){if(state.sites.some(s=>s.status==="selected"||s.status==="negotiating"))return 4;
+  if(state.samples.some(s=>/Bulk/.test(s.method||"")))return 3;
+  if(state.samples.filter(s=>/pit|Channel|Drill/i.test(s.method||"")).length>=10)return 2;
+  if(state.samples.length)return 1;return 0}
+function renderOverview(){const act=state.sites.filter(s=>s.status!=="dropped");let V=0,G=0;state.samples.forEach(s=>{const v=bankVol(s);if(v>0){V+=v;G+=sampleGold(s)/1000||0}});
+  const openT=state.tasks.filter(t=>t.status!=="完成").length;
+  $("#ov-stats").innerHTML=[["在看矿点",act.length,"个"],["已录样品",state.samples.length,"个"],["样品加权品位",V>0?fmt(G/V,3):"—","g/m³（毛金）"],["未完成任务",openT,"项"],["联系人",state.contacts.length,"人"],["日志",state.journal.length,"条"]].map(([k,v,u])=>`<div class="stat"><div class="k">${k}</div><div class="v">${v}</div><div class="u">${u}</div></div>`).join("");
+  $("#ov-pipe").innerHTML=STATUSES.map(([k,l])=>`<div><div class="c">${state.sites.filter(s=>(s.status||"candidate")===k).length}</div><div class="l">${l}</div></div>`).join("");
+  const st=currentStage();$("#ov-steps").innerHTML=STAGES.map(([t,d],i)=>`<li class="${i===st?"now":""}"><div><b>${t}</b><div class="small muted">${d}</div></div></li>`).join("")}
+
+/* ================= ASK CLAUDE ================= */
+const RULES=`你是一个帮助家族评估巴布亚新几内亚（Morobe 省，莱城/Wau/Bulolo 一带）砂金项目的顾问，用简体中文回答，简洁直接。
+关键事实（已核实，2026-10）：
+- 品位按原位立方米纯金计（g/m³）；淘盘只能做勘查参考，不能估算储量；可信品位需挖到基岩的系统探坑（横穿河道布线）和试采大样；平均值按体积加权；异常高值先复采。
+- 天然砂金成色通常 70–95%；不要用火试金测砂金品位；松散系数 17–54% 需自测。
+- 历史上预测与实际回收比可在 31%–277% 之间波动；投设备前必须试采。
+- Hancock 1991：PNG 手工矿工门槛 >500 mg/m³，机械化约一半；大片地区 250–2,000 mg/m³。
+- 法律：AML 只给土地所有人（≤5 公顷、河床及 20 m 内、≤5 年）；砂金 ML 须公民持股 ≥51%；外国方现实身份是贡金协议的承包方，协议须部长批准并在 MRA 登记；占地费 ≥K2,000/月（60% 持有人/40% 社区），投产后按毛销售额分成；所有黄金须卖给央行持牌出口商或其关联收金商。2021 年政策把砂金保留给公民，总理 2026-10-15 在议会承诺 2027 年大选前立法。2025-10-29 Bulolo 区 105 名外籍人员因非法采金被押离 Morobe 等待遣返。现行 IPA 保留行业清单把砂金开采保留给本国人，目前没有外资企业获准；IPA 提议收窄，结果未公布。环保许可：机械化 ML 年处理超过 5 万吨属二级 B 类。
+- 税费：权利金 2% + MRA 规费 0.5%；企业所得税 30%（外国公司常设机构约 40.5%）；GST 10%。
+- 成本参考：柴油 K5.90/L（2026-10，莫尔兹比港）；最低工资 K5.00/小时；Cat 320 约 11.6 L/h。
+不确定的事要明说"需要核实"，不要编造数字或法规；涉及法律请建议找 PNG 本地律师。`;
+function projectContext(){const sites=state.sites.map(s=>{const st=siteStats(s.id);return {名称:s.name,状态:statusLabel(s.status),地区:s.area,省:s.province,GPS:s.gps,土地主:s.landowner,租约:s.tenure,EL覆盖:s.el,交通:s.access,水源:s.water,现有活动:s.activity,评分:s.scores,样品数:st.n,系统取样数:st.sys,加权毛金品位:Number.isFinite(st.raw)?+st.raw.toFixed(3):null,纯金品位:Number.isFinite(st.fine)?+st.fine.toFixed(3):null,备注:(s.notes||"").slice(0,300)}});
+  const samples=state.samples.slice(-60).map(s=>({矿点:siteName(s.siteId),日期:s.date,编号:s.label,方法:s.method,深度:[s.from,s.to],基岩:s.bedrock,原位m3:+(bankVol(s)||0).toFixed(3),毛金mg:sampleGold(s),品位:Number.isFinite(gradeOf(s))?+gradeOf(s).toFixed(3):null,成色:s.fine,备注:(s.notes||"").slice(0,120)}));
+  const tasks=state.tasks.filter(t=>t.status!=="完成").map(t=>({任务:t.title,状态:t.status,负责人:t.owner,截止:t.due}));
+  const journal=state.journal.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")).slice(0,8).map(j=>({日期:j.date,标题:j.title,内容:(j.body||"").slice(0,300)}));
+  return JSON.stringify({矿点:sites,样品:samples,未完成任务:tasks,最近日志:journal,今天:today()})}
+let turns=[],askCtl=null;
+const SUGG=["我们现在处在哪个阶段？下一步最该做什么？","哪个矿点最值得继续投入？理由是什么？","现有样品够不够判断品位？还缺什么？","和土地主谈贡金协议时要注意哪些条款？"];
+$("#ask-sugg").innerHTML=SUGG.map(s=>`<button type="button" class="ghost" data-q="${esc(s)}" style="border:1px solid var(--line)">${esc(s)}</button>`).join("");
+$("#ask-sugg").onclick=e=>{const b=e.target.closest("[data-q]");if(b){$("#ask-in").value=b.dataset.q;$("#ask-form").requestSubmit()}};
+function renderChat(live){const log=$("#ask-log");if(!turns.length&&!live){log.innerHTML=`<div class="empty">例如："A 点现在的样品够不够判断品位？还缺什么？"</div>`;return}
+  log.innerHTML=turns.map(t=>`<div class="msg ${t.role==="user"?"u":"a"}">${esc(t.content)}</div>`).join("")+(live!=null?`<div class="msg a">${esc(live)}</div>`:"");log.scrollTop=log.scrollHeight}
+$("#ask-form").onsubmit=async e=>{e.preventDefault();const q=$("#ask-in").value.trim();if(!q)return;if(!sample){$("#ask-msg").textContent="当前无法调用 Claude（需要在 Claude 应用或网页里打开本页）";return}
+  turns.push({role:"user",content:q});$("#ask-in").value="";renderChat("正在思考…");$("#ask-send").disabled=true;$("#ask-stop").hidden=false;$("#ask-msg").textContent="";
+  askCtl=new AbortController();
+  const input=[{role:"user",content:RULES+"\n\n项目当前数据（JSON）：\n"+projectContext().slice(0,60000)},...turns.slice(-10)];
+  try{const r=await sample(input,{cache:false,signal:askCtl.signal,onText:({text})=>renderChat(text)});turns.push({role:"assistant",content:r.text});if(r.truncated)$("#ask-msg").textContent="回答被截断，可以让它继续。"}
+  catch(err){if(err.text)turns.push({role:"assistant",content:err.text+"（中断）"});$("#ask-msg").textContent=err.code==="cancelled"?"":err.code==="not_granted"?"你没有允许本页使用 Claude":err.code==="rate_limited"?"调用太频繁，请稍后再试":"出错了，请重试"}
+  finally{$("#ask-send").disabled=false;$("#ask-stop").hidden=true;renderChat()}};
+$("#ask-stop").onclick=()=>askCtl?.abort();$("#ask-clear").onclick=()=>{turns=[];renderChat()};
+
+/* ================= KNOWLEDGE: BASICS ================= */
+$("#xsec").addEventListener("click",e=>{const g=e.target.closest(".hot");if(!g)return;showHot(g)});
+$("#xsec").addEventListener("keydown",e=>{const g=e.target.closest(".hot");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();showHot(g)}});
+function showHot(g){$$("#xsec .hot").forEach(x=>x.classList.toggle("on",x===g));const d=XSEC[g.dataset.h];$("#xsec-info").innerHTML=`<b>${g.dataset.h}. ${d[0]}</b><br>${d[1]}`}
+showHot($('#xsec .hot[data-h="1"]'));
+
+/* ================= KNOWLEDGE: GRADE ================= */
+$("#ladder").innerHTML=LADDER.map(([t,c,tells,limits,cost],i)=>`<div class="rung"><div><b>${i+1}. ${t}</b><div class="lvl">可信度</div><div class="bar"><i style="width:${c}%"></i></div></div><div class="small"><div><b>能告诉你：</b>${tells}</div><div><b>局限：</b>${limits}</div><div class="muted">${cost}</div></div></div>`).join("");
+function panCalc(){const pf=+$("#pc-pf").value,n=+$("#pc-n").value,mg=+$("#pc-mg").value,f=+$("#pc-f").value;
+  if(!(pf>0&&n>0)){$("#pc-out").textContent="请填写盘系数和盘数";return}
+  const v=n/pf,g=mg/1000/v;let t=`${n} 盘 ≈ 原位 <b class="mono">${fmt(v,4)}</b> m³（约 ${fmt(v*1000,0)} 升原位砂砾）→ 毛金品位 <b class="mono">${fmt(g,3)}</b> g/m³（${fmt(g*1000,0)} mg/m³）`;
+  if(f>0)t+=`，纯金品位 <b class="mono">${fmt(g*f/100,3)}</b> g/m³`;
+  t+=`<br><span class="xs">只作勘查参考。对照：Hancock 称机械化在 PNG 约 250 mg/m³ 起就值得考虑${C(6)}。</span>`;$("#pc-out").innerHTML=t}
+["pc-pf","pc-n","pc-mg","pc-f"].forEach(id=>$("#"+id).addEventListener("input",panCalc));panCalc();
+function unitConv(){const v=+$("#uc-v").value,u=$("#uc-u").value,sw=(+$("#uc-s").value||0)/100;const YD=0.764554857984,OZ=31.1034768,DWT=1.55517384;
+  const gm3={gm3:v,mgm3:v/1000,ozyd3:v*OZ/YD,dwtyd3:v*DWT/YD,gyd3:v/YD}[u];
+  $("#uc-out").innerHTML=[["g/m³（原位）",gm3,3],["mg/m³",gm3*1000,0],["oz/yd³",gm3*YD/OZ,4],["dwt/yd³",gm3*YD/DWT,3],["g/yd³",gm3*YD,3],[`g/m³（松方，膨胀 ${Math.round(sw*100)}%）`,gm3/(1+sw),3]].map(([k,x,d])=>`<tr><td>${k}</td><td class="n">${fmt(x,d)}</td></tr>`).join("")}
+["uc-v","uc-u","uc-s"].forEach(id=>$("#"+id).addEventListener("input",unitConv));unitConv();
+
+/* ================= KNOWLEDGE: PROCESS / EQUIP / PERMITS ================= */
+$("#proc-steps").innerHTML=PROC.map(([t,d])=>`<li><div><b>${t}</b><div class="small">${d}</div></div></li>`).join("");
+const tag=x=>x==="有来源"?'<span class="pill ok">有来源</span>':'<span class="pill warn">推断</span>';
+$("#eq-table").innerHTML=`<tr><th></th><th>小型</th><th>中型</th><th>大型</th></tr>`+EQUIP.map(r=>`<tr><td><b>${r[0]}</b></td><td class="small">${r[1]} ${tag(r[2])}</td><td class="small">${r[3]} ${tag(r[4])}</td><td class="small">${r[5]} ${tag(r[6])}</td></tr>`).join("")+`<tr><td colspan="4" class="xs muted">来源：Cat、SANY、iCON、Savona、Extrac-Tec 规格页；育空砂金矿图集与收入模型${C(29)}${C(30)}；911 Metallurgist 用水数据${C(32)}；Cat 性能手册油耗${C(28)}；价格见下方。设备投入不含运费、关税、营地和不可预见费。</td></tr>`;
+const pv=v=>/待核实/.test(v)?`<span class="pill warn">待核实</span>`:v;
+$("#roadmap").innerHTML=ROADMAP.map((r,i)=>`<li data-n="${i+1}"><div class="card"><b>${r[0]}</b><dl class="kv"><dt>部门</dt><dd>${r[1]}</dd><dt>需要</dt><dd>${r[2]}</dd><dt>费用</dt><dd>${pv(r[3])}</dd><dt>时间</dt><dd>${pv(r[4])}</dd></dl></div></li>`).join("");
+
+/* ================= KNOWLEDGE: ECONOMICS ================= */
+const DEF={grade:0.3,m3:400,days:250,rec:80,price:4024,buyer:95,cost:10,roy:2.5,capex:600000,fx:4.2988,lprofit:30,lm3:5,trib:15,occ:2000,own:100,tax:30};
+const P=()=>Object.fromEntries(Object.keys(DEF).map(k=>[k,+$("#p-"+k).value||0]));
+function calc(p){const V=p.m3*p.days,R=p.rec/100,Pg=p.price/31.1035,b=p.buyer/100,t=p.roy/100;
+  const goldG=V*p.grade*R,gross=goldG*Pg*b,gov=gross*t,opex=V*p.cost,unit=R*Pg*b;
+  const M=[
+    {k:"A",n:"毛量 15%",land:gross*.15,be:p.cost/(unit*(1-t-.15))},
+    {k:"B",n:"毛量 20%",land:gross*.20,be:p.cost/(unit*(1-t-.20))},
+    {k:"C",n:`净利 ${p.lprofit}%`,land:Math.max(0,gross-gov-opex)*p.lprofit/100,be:p.cost/(unit*(1-t))},
+    {k:"D",n:`每 m³ K${p.lm3}`,land:V*p.lm3/p.fx,be:(p.cost+p.lm3/p.fx)/(unit*(1-t))},
+    {k:"E",n:`贡金 ${p.trib}% 毛收入`,land:gross*p.trib/100,be:p.cost/(unit*(1-t-p.trib/100))}];
+  M.forEach(m=>{m.profit=gross-gov-opex-m.land;m.ours=m.profit*p.own/100;m.after=m.ours>0?m.ours*(1-p.tax/100):m.ours;m.payback=m.after>0?p.capex/(m.after/12):Infinity});
+  return {V,goldG,oz:goldG/31.1035,gross,gov,opex,M}}
+function renderModel(){const p=P(),r=calc(p);const best=r.M.reduce((a,m)=>m.after>a.after?m:a,r.M[0]);
+  $("#r-stats").innerHTML=[["年处理量",fmt(r.V),"m³"],["年产纯金",fmt(r.oz),`oz（${fmt(r.goldG/1000,1)} kg）`],["卖金收入",fmt(r.gross/1e6,2),`US$m ≈ K${fmt(r.gross*p.fx/1e6,2)}m`],["运营成本",fmt(r.opex/1e6,2),"US$m"]].map(([k,v,u])=>`<div class="stat"><div class="k">${k}</div><div class="v">${v}</div><div class="u">${u}</div></div>`).join("");
+  $("#r-table").innerHTML=`<tr><th>土地主分成</th><th class="n">土地主</th><th class="n">政府</th><th class="n">运营利润</th><th class="n">我方税后</th><th class="n">回本(月)</th><th class="n">盈亏平衡 g/m³</th></tr>`+r.M.map(m=>`<tr class="${m===best?"best":""}"><td>${m.k} · ${esc(m.n)}</td><td class="n">${fmt(m.land/1e6,2)}</td><td class="n">${fmt(r.gov/1e6,2)}</td><td class="n" style="${m.profit<0?"color:var(--bad)":""}">${fmt(m.profit/1e6,2)}</td><td class="n"><b>${fmt(m.after/1e6,2)}</b></td><td class="n">${Number.isFinite(m.payback)?fmt(m.payback,1):"不回本"}</td><td class="n">${fmt(m.be,3)}</td></tr>`).join("")+`<tr><td colspan="7" class="xs muted">单位 US$m/年。方案 E 投产后不再付占地费；投产前的占地费计入下方现金流。</td></tr>`;
+  renderHeat();renderCashflow()}
+fillSelect($("#hm-method"),[["0","方案 A 毛量 15%"],["1","方案 B 毛量 20%"],["2","方案 C 按净利"],["3","方案 D 按方量"],["4","方案 E 贡金"]]);
+$("#hm-method").addEventListener("change",renderHeat);
+function renderHeat(){const p=P(),mi=+$("#hm-method").value||0;const grades=[0.05,0.1,0.15,0.2,0.3,0.4,0.5,0.75,1.0];const prices=[2500,3000,3500,4000,4500,5000,5500];
+  const vals=grades.map(g=>prices.map(pr=>calc({...p,grade:g,price:pr}).M[mi].profit/1e6));const mx=Math.max(...vals.flat().map(Math.abs))||1;
+  const near=(a,b)=>Math.abs(a-b)<1e-9;const cg=grades.reduce((a,g)=>Math.abs(g-p.grade)<Math.abs(a-p.grade)?g:a,grades[0]);const cp=prices.reduce((a,x)=>Math.abs(x-p.price)<Math.abs(a-p.price)?x:a,prices[0]);
+  const col=v=>{const a=Math.min(1,Math.abs(v)/mx);if(Math.abs(v)<0.05*mx)return"background:var(--sunk)";return `background:color-mix(in srgb, var(${v>0?"--ok":"--bad"}) ${Math.round(15+a*70)}%, var(--surface));color:${a>0.55?"var(--surface)":"var(--ink)"}`};
+  $("#heat").innerHTML=`<tr><th>品位 g/m³ ＼ 金价 US$/oz</th>${prices.map(x=>`<th>${fmt(x)}</th>`).join("")}</tr>`+grades.map((g,i)=>`<tr><th>${g}</th>${prices.map((pr,j)=>`<td style="${col(vals[i][j])};${near(g,cg)&&near(pr,cp)?"outline:2px solid var(--ink);outline-offset:-2px":""}">${fmt(vals[i][j],2)}</td>`).join("")}</tr>`).join("")}
+function renderCashflow(){const p=P(),r=calc(p);const mi=+$("#hm-method").value||0;const m=r.M[mi];
+  const lead=Math.max(0,+$("#cf-lead").value||0),ramp=Math.max(0,+$("#cf-ramp").value||0),wet=(+$("#cf-wet").value||0)/100,start=Math.min(12,Math.max(1,+$("#cf-start").value||1));
+  const wetM=new Set(String($("#cf-wetm").value).split(/[,，\s]+/).map(Number).filter(x=>x>=1&&x<=12));
+  const months=36;let cum=-p.capex;const pts=[cum];let firstPos=null;
+  const occUSD=(mi===4?p.occ:0)/p.fx;
+  const baseMonthly=m.profit/12;
+  for(let i=1;i<=months;i++){let cf=0;
+    if(i<=lead){cf=-occUSD}else{const k=i-lead;const cal=((start-1+(k-1))%12)+1;let f=ramp>0&&k<=ramp?0.4+0.6*(k-1)/Math.max(1,ramp):1;if(wetM.has(cal))f*=(1-wet);
+      const grossM=r.gross/12*f,opexM=r.opex/12*f,govM=grossM*p.roy/100;let landM=0;
+      if(mi===0)landM=grossM*.15;else if(mi===1)landM=grossM*.2;else if(mi===2)landM=Math.max(0,grossM-govM-opexM)*p.lprofit/100;else if(mi===3)landM=r.V/12*f*p.lm3/p.fx;else landM=grossM*p.trib/100;
+      let pr=(grossM-govM-opexM-landM)*p.own/100;if(pr>0)pr*=(1-p.tax/100);cf=pr}
+    cum+=cf;pts.push(cum);if(firstPos==null&&cum>=0)firstPos=i}
+  const W=720,H=240,L=64,Rr=16,T=16,B=34;const mn=Math.min(...pts,0),mxv=Math.max(...pts,0);const span=(mxv-mn)||1;
+  const x=i=>L+i*(W-L-Rr)/months,y=v=>T+(mxv-v)*(H-T-B)/span;
+  const ticks=[];const step=Math.pow(10,Math.floor(Math.log10(span/4)));const st=[1,2,5,10].map(s=>s*step).find(s=>span/s<=6)||step*10;for(let v=Math.ceil(mn/st)*st;v<=mxv+1e-9;v+=st)ticks.push(v);
+  const path=pts.map((v,i)=>`${i?"L":"M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+  const area=path+` L${x(months)} ${y(0)} L${x(0)} ${y(0)} Z`;
+  $("#cf-chart").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="累计现金流折线图">
+    ${ticks.map(v=>`<line x1="${L}" x2="${W-Rr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="${v===0?1.5:1}"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${(v/1e6).toFixed(Math.abs(st)<1e6?1:0)}</text>`).join("")}
+    ${[0,6,12,18,24,30,36].map(i=>`<text x="${x(i)}" y="${H-12}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${i}</text>`).join("")}
+    <text x="${W-Rr}" y="${H-1}" text-anchor="end" font-size="11" fill="var(--muted)">月</text><text x="4" y="12" font-size="11" fill="var(--muted)">US$m</text>
+    <path d="${area}" fill="var(--gold-soft)" opacity=".7"/>
+    <path d="${path}" fill="none" stroke="var(--gold)" stroke-width="2.2"/>
+    ${firstPos!=null?`<circle cx="${x(firstPos)}" cy="${y(pts[firstPos])}" r="4.5" fill="var(--river)"/><text x="${x(firstPos)}" y="${y(pts[firstPos])-10}" text-anchor="middle" font-size="12" fill="var(--river)">第 ${firstPos} 个月回本</text>`:""}
+    <circle cx="${x(months)}" cy="${y(pts[months])}" r="4" fill="var(--gold)"/>
+  </svg>`;
+  $("#cf-note").innerHTML=`方案 ${m.k}（${esc(m.n)}）：36 个月末累计 <b class="mono">US$${fmt(pts[months]/1e6,2)}m</b>，${firstPos!=null?`在第 <b>${firstPos}</b> 个月收回前期投入`:"36 个月内<b>无法</b>收回前期投入"}。前 ${lead} 个月为取样和办证期${mi===4?"（支付占地费）":""}，雨季月份产量减 ${Math.round(wet*100)}%。上方选择的分成方案同时用于热力图和本图。`}
+$$("#mdl input").forEach(i=>i.addEventListener("input",renderModel));["cf-lead","cf-ramp","cf-wet","cf-wetm","cf-start"].forEach(id=>$("#"+id).addEventListener("input",renderCashflow));
+$("#hm-method").addEventListener("change",renderCashflow);
+$("#p-reset").onclick=()=>{Object.entries(DEF).forEach(([k,v])=>$("#p-"+k).value=v);renderModel()};
+$("#p-save").onclick=async()=>{const name=`品位 ${$("#p-grade").value} · ${$("#p-m3").value} m³/天 · 成本 $${$("#p-cost").value} · 金价 $${$("#p-price").value}`;
+  if(await write(()=>db.collection("scenarios").add({name,params:P(),createdAt:new Date().toISOString()}),$("#p-msg")))toast("方案已保存")};
+function renderScenarios(){const t=$("#sc-table");if(!state.scenarios.length){t.innerHTML=`<tr><td class="muted small">调好参数后点"保存为方案"，方便对比不同矿点。</td></tr>`;return}
+  t.innerHTML=`<tr><th>方案</th><th>日期</th><th class="n">年产 oz</th><th class="n">我方税后（方案 A）US$m</th><th></th></tr>`+state.scenarios.slice().sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||"")).map(s=>{const p={...DEF,...(s.params||{})},r=calc(p);
+    return `<tr><td>${esc(s.name)}</td><td class="mono">${esc((s.createdAt||"").slice(0,10))}</td><td class="n">${fmt(r.oz)}</td><td class="n">${fmt(r.M[0].after/1e6,2)}</td><td><button class="ghost" data-load="${s.id}">载入</button><button class="ghost danger" data-scdel="${s.id}" ${canWrite?"":"disabled"}>删除</button></td></tr>`}).join("")}
+$("#sc-table").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.load){const s=state.scenarios.find(x=>x.id===b.dataset.load);Object.entries({...DEF,...s.params}).forEach(([k,v])=>{const el=$("#p-"+k);if(el)el.value=v});renderModel();toast("已载入")}
+  if(b.dataset.scdel)armDelete(b,async()=>{if(await write(()=>db.doc("scenarios/"+b.dataset.scdel).delete()))toast("已删除")})};
+
+/* ================= MAPS ================= */
+function parseGps(s){const m=String(s||"").match(/(-?\d+(?:\.\d+)?)\s*[,，\s]\s*(-?\d+(?:\.\d+)?)/);if(!m)return null;let a=+m[1],b=+m[2];if(Math.abs(a)>Math.abs(b)){[a,b]=[b,a]}if(a>0&&a<12&&b>140)a=-a;return (a<0&&a>-12&&b>140&&b<157)?[a,b]:null}
+function plot(el,box,W,H,points,grid){const [lo0,lo1,la0,la1]=box;const L=46,T=14,R=14,B=30;const x=lo=>L+(lo-lo0)*(W-L-R)/(lo1-lo0),y=la=>T+(la1-la)*(H-T-B)/(la1-la0);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="经纬度示意图"><rect x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="var(--sunk)" rx="4"/>`;
+  for(let lo=Math.ceil(lo0/grid)*grid;lo<=lo1+1e-9;lo+=grid)s+=`<line x1="${x(lo)}" x2="${x(lo)}" y1="${T}" y2="${H-B}" stroke="var(--line)"/><text x="${x(lo)}" y="${H-B+14}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--f-mono)">${+lo.toFixed(2)}°E</text>`;
+  for(let la=Math.ceil(la0/grid)*grid;la<=la1+1e-9;la+=grid)s+=`<line x1="${L}" x2="${W-R}" y1="${y(la)}" y2="${y(la)}" stroke="var(--line)"/><text x="${L-4}" y="${y(la)+3}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--f-mono)">${Math.abs(+la.toFixed(2))}°S</text>`;
+  points.forEach(p=>{const cx=x(p.lon),cy=y(p.lat);if(cx<L||cx>W-R||cy<T||cy>H-B)return;
+    s+=p.kind==="site"?`<rect x="${cx-5}" y="${cy-5}" width="10" height="10" fill="var(--river)" transform="rotate(45 ${cx} ${cy})"/>`:p.kind==="dist"?`<circle cx="${cx}" cy="${cy}" r="6" fill="var(--gold)" opacity=".85"/>`:`<circle cx="${cx}" cy="${cy}" r="3.5" fill="var(--ink)"/>`;
+    s+=`<text x="${cx+(p.anchor==="end"?-8:8)}" y="${cy+4}" text-anchor="${p.anchor||"start"}" font-size="11" fill="var(--ink)" paint-order="stroke" stroke="var(--sunk)" stroke-width="3">${esc(p.label)}</text>`});
+  el.innerHTML=s+"</svg>"}
+function renderMaps(){const sites=state.sites.map(s=>{const g=parseGps(s.gps);return g?{lat:g[0],lon:g[1],label:s.name,kind:"site"}:null}).filter(Boolean);
+  const towns=TOWNS.map(t=>({lat:t[1],lon:t[2],label:t[0],kind:"town",anchor:t[0].includes("Moresby")||t[0]==="Wau"||t[0]==="Goroka"?"end":"start"}));
+  const dists=DISTRICTS.map(d=>({lat:d[3],lon:d[4],label:d[0],kind:"dist",anchor:d[4]>151?"end":"start"}));
+  plot($("#map-png"),[140.8,155.5,-12,-2.5],560,420,[...dists,...towns.filter(t=>t.label!=="Wau"&&t.label!=="Bulolo"),...sites],2);
+  plot($("#map-mor"),[146.2,147.4,-7.8,-6.4],520,420,[...towns.filter(t=>t.lon>146&&t.lon<147.5&&t.lat<-6.3).map(t=>({...t,anchor:t.label==="Wau"?"end":"start"})),...sites],0.2)}
+$("#dist-table").innerHTML=`<tr><th>产区</th><th>省份</th><th>要点</th></tr>`+DISTRICTS.map(d=>`<tr><td><b>${d[0]}</b></td><td class="small">${d[1]}</td><td class="small">${d[2]}</td></tr>`).join("")+`<tr><td colspan="3" class="xs muted">另见 Mt Kare${C(64)}、Kainantu 与 Misima${C(65)}、Bulolo 采金船${C(41)}、Atomb 河事件${C(24)}。产区圆点为大致位置。</td></tr>`;
+
+/* ================= POLICY ================= */
+$("#pol-new").onclick=()=>{$("#pol-form").reset();toggleForm("#pol-form-wrap",true)};$("#pol-cancel").onclick=()=>toggleForm("#pol-form-wrap",false);
+$("#pol-form").onsubmit=async e=>{e.preventDefault();const msg=$("#pol-msg");
+  if(await write(()=>db.collection("policy").add({date:$("#po-date").value,type:$("#po-type").value,title:$("#po-title").value.trim(),url:$("#po-url").value.trim(),createdAt:new Date().toISOString()}),msg)){toggleForm("#pol-form-wrap",false);toast("已添加")}};
+function renderPolicy(){const fixed=POLICY_SEED.map(([d,t,ti,s])=>({date:d,type:t,title:ti,src:s}));const dyn=state.policy.map(p=>({...p,dyn:true}));
+  const rows=[...fixed,...dyn].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const cls={"执法":"bad","立法 / 政策":"warn","数据 / 报告":"riv","市场":""};
+  $("#pol-table").innerHTML=`<tr><th>日期</th><th>类型</th><th>事件</th><th>来源</th><th></th></tr>`+rows.map(r=>`<tr><td class="mono">${esc(r.date)}</td><td><span class="pill ${cls[r.type]||""}">${esc(r.type)}</span></td><td class="small">${esc(r.title)}${r.source==="weekly"?' <span class="pill">每周检索</span>':""}</td><td>${r.src?C(r.src):r.url?`<a href="${esc(r.url)}" target="_blank" rel="noopener" class="small">链接</a>`:""}</td><td>${r.dyn?`<button class="ghost danger" data-podel="${r.id}" ${canWrite?"":"disabled"}>删除</button>`:""}</td></tr>`).join("")}
+$("#pol-table").onclick=e=>{const b=e.target.closest("[data-podel]");if(b)armDelete(b,async()=>{if(await write(()=>db.doc("policy/"+b.dataset.podel).delete()))toast("已删除")})};
+
+/* ================= GLOSSARY / SOURCES ================= */
+$("#gl-table").innerHTML=`<tr><th>中文</th><th>English</th><th>Tok Pisin</th><th>说明</th></tr>`+GLOSS.map(g=>`<tr><td><b>${g[0]}</b></td><td>${g[1]}</td><td class="mono">${g[2]}</td><td class="small">${g[3]}</td></tr>`).join("");
+$("#src-list").innerHTML=Object.entries(SOURCES).map(([n,s])=>`<li value="${n}" id="src-${n}"><a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>${s[2]?" · "+s[2].map(x=>`<a href="${esc(x[1])}" target="_blank" rel="noopener">${esc(x[0])}</a>`).join(" · "):""}</li>`).join("");
+document.addEventListener("click",e=>{const a=e.target.closest("[data-src]");if(!a)return;e.preventDefault();location.hash="sources";setTimeout(()=>{const li=$("#src-"+a.dataset.src);if(li){li.scrollIntoView({block:"center"});li.style.background="var(--gold-soft)";setTimeout(()=>li.style.background="",1600)}},50)});
+
+/* ================= render all + connect ================= */
+$$("sup.c a:not([data-src])").forEach(a=>{a.dataset.src=a.textContent.trim();a.textContent="["+a.dataset.src+"]"});
+function renderAll(){siteOptions();renderOverview();renderSites();renderCompare();renderSamples();renderJournal();renderTasks();renderContacts();renderBudget();renderFiles();renderScenarios();renderPolicy();if(!$("#v-map").hidden)renderMaps()}
+renderAll();renderModel();previewSample();applyPerms();route();
+(async()=>{
+  if(!window.claude||!window.claude.use){$("#conn").textContent="离线预览：数据不会保存";return}
+  const [d,a,u,s]=await Promise.all([claude.use("db"),claude.use("assets"),claude.use("user"),claude.use("sample")]);
+  db=d;assets=a;sample=s;
+  if(sample){try{const lim=await sample.limits();canImg=!!lim.images}catch(e){canImg=false}}
+  if(u){try{const c=await u.can("data.write");if(c===false)canWrite=false}catch(e){}}
+  if(!db){$("#conn").textContent="未登录或无权限：只能浏览";canWrite=false;applyPerms();return}
+  $("#conn").textContent=canWrite?"数据已同步":"只读";applyPerms();
+  let pending=null;const schedule=()=>{if(pending)return;pending=requestAnimationFrame(()=>{pending=null;renderAll();applyPerms()})};
+  COLS.forEach(c=>{db.collection(c).onSnapshot(snap=>{state[c]=snap.docs.map(x=>({id:x.id,...x.data()}));schedule()},()=>{$("#conn").textContent="数据连接中断，请刷新页面"})});
+})();
+})();
+
+</script>
+</body></html>
